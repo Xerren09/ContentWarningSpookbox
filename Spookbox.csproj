@@ -48,7 +48,7 @@
 		<ItemGroup>
 			<SteamFiles Include="publish\steam\*.*" />
 		</ItemGroup>
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWDir)\Plugins\ExampleCWPlugin" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWDir)\Plugins\$(MSBuildProjectName)" />
     </Target>
 
 	<Target Condition="'$(Configuration)'=='Modman (Release)'" Name="CopyBepInExPlugin" AfterTargets="Build">
