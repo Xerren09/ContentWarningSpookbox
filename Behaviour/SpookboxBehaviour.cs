@@ -106,7 +106,7 @@ namespace Spookbox.Behaviour
                 _alertCountdown -= Time.deltaTime;
                 if (_alertCountdown < 0f)
                 {
-                    SFX_Player.instance.PlayNoise(base.transform.position, 30f);
+                    SFX_Player.instance.PlayNoise(base.transform.position, 35f);
                     _alertCountdown = _alertInterval;
                 }
             }
