@@ -1,11 +1,25 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using System.Reflection;
+using UnityEngine;
 using ContentWarningShop;
 using ContentWarningShop.Localisation;
 using Spookbox.Behaviour;
 #if MODMAN
 using BepInEx;
 #endif
+
+/*
+    TASKS:
+
+    DONE: Add infinite battery setting
+    DONE: Price setting setup
+    DONE: Keep the beats flowing even if the boombox is stashed
+    DONE: Respect local volume override when detached
+
+    TODO: Scroll to swap tracks
+    TODO: Right click hold on shoulder - plays louder?
+    TODO: Localise strings
+ */
 
 namespace Spookbox
 {
@@ -23,7 +37,7 @@ namespace Spookbox
     {
         public static string PluginDirPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public const string MOD_GUID = "xerren.cwspookbox";
-        public const string MOD_NAME = "Spookbox";
+        public const string MOD_NAME = "Spöökbox";
 
         internal static Item _spookboxItem;
         internal const string SPOOKBOX_GUID = "91f31218-6507-4bef-928d-e76b33f44a51";
@@ -50,7 +64,15 @@ namespace Spookbox
             _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.Use2Glyph} Next Track");
 
             Mixtape.LoadTracks();
+            
+            GameHandler.Instance.StartCoroutine(Deferred_LoadSettings());
             Debug.Log($"{MOD_GUID} initialised.");
+        }
+
+        private static IEnumerator Deferred_LoadSettings()
+        {
+            yield return new WaitUntil(() => GameHandler.Instance.SettingsHandler != null);
+            LoadSettings();
         }
 
         private static AssetBundle LoadAssetBundle()

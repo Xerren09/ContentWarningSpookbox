@@ -29,6 +29,7 @@ namespace Spookbox.Entries
 
         public string GetString()
         {
+            // TODO: Get locale string
             return string.Format(UIString, Mathf.RoundToInt(Volume * 100));
         }
     }

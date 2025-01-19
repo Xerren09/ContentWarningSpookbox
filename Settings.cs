@@ -1,8 +1,7 @@
-﻿using Spookbox.Entries;
-using ContentWarningShop;
+﻿using UnityEngine;
 using Unity.Mathematics;
-using UnityEngine;
 using Zorro.Settings;
+using Spookbox.Entries;
 
 namespace Spookbox.Settings
 {
@@ -129,16 +128,10 @@ namespace Spookbox.Settings
     [ContentWarningSetting]
     public class BoomboxPriceSetting : IntSetting, IExposedSetting
     {
+        public event Action<int> Changed;
         public override void ApplyValue()
         {
-            if (SpookboxPlugin._spookboxItem != null && SynchronisedMetadata<bool>.InLobby == false)
-            {
-                SpookboxPlugin._spookboxItem.price = Value;
-            }
-            else
-            {
-                Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while in a lobby. Item price can only be changed outside of the lobby; please restart the lobby to change this setting.");
-            }
+            Changed?.Invoke(Value);
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
         public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Price (Host)";
