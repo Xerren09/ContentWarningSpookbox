@@ -40,7 +40,6 @@ namespace Spookbox
 #elif MODMAN
             Debug.Log($"{MOD_GUID} initialising via BepInEx mod loader.");
 #endif
-            //
             _bundle = LoadAssetBundle();
             _spookboxItem = _bundle.LoadAsset<Item>("Spookbox");
             _spookboxItem.itemObject.AddComponent<SpookboxBehaviour>();
@@ -48,7 +47,7 @@ namespace Spookbox
             Shop.RegisterItem(_spookboxItem);
             Shop.RegisterCustomDataEntries();
 
-            _spookboxItem.SetDefaultTooltips("{key_use} Play;{key_use2} Next Track");
+            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.Use2Glyph} Next Track");
 
             Mixtape.LoadTracks();
             Debug.Log($"{MOD_GUID} initialised.");

@@ -14,6 +14,7 @@ namespace Spookbox
         /// </summary>
         public const int MAX_TRACKS = 255;
         public static readonly List<AudioClip> Tracks = new();
+        public static int Length => Tracks.Count;
 
         /// <summary>
         /// Checks if any tracks are loaded.
@@ -37,12 +38,12 @@ namespace Spookbox
             //
             Tracks.Clear();
             var files = GetAllTracks();
-            Debug.Log($"{files.Count} potential boombox tracks found.");
+            Debug.Log($"{files.Count} potential mixtape tracks found.");
             foreach (var file in files)
             {
                 if (Tracks.Count == MAX_TRACKS)
                 {
-                    Debug.LogWarning($"Maximum track count limit reached: {MAX_TRACKS}.");
+                    Debug.LogWarning($"Mixtape full: maximum track count limit reached ({MAX_TRACKS}).");
                     break;
                 }
                 var type = GetAudioType(file);
@@ -58,7 +59,7 @@ namespace Spookbox
                 }
                 track.name = Path.GetFileNameWithoutExtension(file);
                 Tracks.Add(track);
-                Debug.Log($"Loaded boombox track: {track.name}");
+                Debug.Log($"Added track to mixtape: {track.name}");
             }
 
         }

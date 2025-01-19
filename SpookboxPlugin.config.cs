@@ -8,8 +8,8 @@ using Steamworks;
 
     DONE: Add infinite battery setting
     DONE: Price setting setup
-    DONE: Respect local volume override when detached
     DONE: Keep the beats flowing even if the boombox is stashed
+    DONE: Respect local volume override when detached
     TODO: Localise strings
     TODO: Scroll to swap tracks
     TODO: Right click hold on shoulder - plays louder?
@@ -20,15 +20,14 @@ namespace Spookbox;
 
 public partial class SpookboxPlugin
 {
-    //
     private const string ALERT_META_GUID = "bigslapTunes";
     internal static readonly SynchronisedMetadata<bool> AlertMonsters = new($"{MOD_GUID}_{ALERT_META_GUID}", true);
     private static BoomboxAlertSetting _alertSetting;
-    //
+
     private const string INF_BATTERY_META_GUID = "infiniteBattery";
     internal static readonly SynchronisedMetadata<bool> InfiniteBattery = new($"{MOD_GUID}_{INF_BATTERY_META_GUID}", false);
     private static BoomboxInfiniteBatterySetting _infiniteBatterySetting;
-    //
+
     private static Callback<LobbyEnter_t> _callback = Callback<LobbyEnter_t>.Create(Steam_LobbyEnter);
 
     private static void _alertSetting_Changed(bool obj)
