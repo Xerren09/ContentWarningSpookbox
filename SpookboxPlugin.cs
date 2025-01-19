@@ -26,9 +26,9 @@ namespace Spookbox
 {
     // This partial class file is used purely to separate the mess that is the multi target setup.
     // Define changes mod setup changes between the vanilla mod loader and bepinx
-    [ContentWarningPlugin(MOD_GUID, "1.0.0", false)]
+    [ContentWarningPlugin(MOD_GUID, MOD_VER, false)]
 #if MODMAN
-    [BepInPlugin(MOD_GUID, MOD_NAME, "1.0.0")]
+    [BepInPlugin(MOD_GUID, MOD_NAME, MOD_VER)]
     [BepInDependency(ShopApiPlugin.MOD_GUID)]
 #endif
     public partial class SpookboxPlugin
@@ -39,6 +39,7 @@ namespace Spookbox
         public static string PluginDirPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public const string MOD_GUID = "xerren.cwspookbox";
         public const string MOD_NAME = "Spöökbox";
+        public const string MOD_VER = "1.0.0";
 
         internal static Item _spookboxItem;
         internal const string SPOOKBOX_GUID = "91f31218-6507-4bef-928d-e76b33f44a51";

@@ -1,12 +1,12 @@
 Content Warning Spöökbox
 ===
 
-[![Steam Downloads](https://img.shields.io/steam/downloads/3408837293?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3408837293)
-[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3408837293?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3408837293)
-[![Steam Last Update Date](https://img.shields.io/steam/update-date/3408837293?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3408837293)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/ShopAPI/)
-[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/ShopAPI/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/ShopAPI/)
+[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
 
 Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
 
@@ -20,11 +20,11 @@ You can download this mod from either the Steam Workshop or Thunderstore. Please
 
 ### Steam Workshop
 
-Spöökbox is easiest to install from the Steam Workshop. Just go the [mod's Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3408837293) and click Subscribe.
+Spöökbox is easiest to install from the Steam Workshop. Just go the [mod's Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959) and click Subscribe.
 
 ### Thunderstore (r2modman)
 
-If you are using r2modman, search for "spookbox" in the app, or go to [the mod's page directly](https://thunderstore.io/c/content-warning/p/Xerren/ShopAPI/) and click "Install with Mod Manager".
+If you are using r2modman, search for "spookbox" in the app, or go to [the mod's page directly](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/) and click "Install with Mod Manager".
 
 
 ## Dependencies
@@ -48,17 +48,17 @@ If you don't want to use your music folder, you can also use the mod's own track
 
 #### Steam Workshop
 
-Locate your Steam installation folder (by default at `C:\Program Files (x86)\Steam\steamapps`), go to `workshop\content\2881650\XXXXXXXXX\SpookboxMixtape` and copy-paste your music files.
+Locate your Steam installation folder (by default at `C:\Program Files (x86)\Steam\steamapps`), go to `workshop\content\2881650\3410924959\SpookboxMixtape` and copy-paste your music files.
 
 #### Thunderstore
 
-Once you have Content Warning and your profile selected, go to settings -> Browse profile folder. From there go to `BepInEx\plugins\Xerren-Spookbox\SpookboxMixtape` and copy-paste your music files. You can also make use of content mods. The boombox's music loader will scan all other mods for directories with the `SpookboxMixtape` name and load all music files within them automatically.
+Once you have Content Warning and your profile selected, go to Settings -> Browse profile folder. From there go to `BepInEx\plugins\Xerren-Spookbox\SpookboxMixtape` and copy-paste your music files. You can also make use of content mods. The boombox's music loader will scan all other mods for directories with the `SpookboxMixtape` name and load all music files within them automatically.
 
 ### Thunderstore Content Mods
 
 If you are using Thunderstore, you can also create content mods. These mods don't add extra functionality, but can provide extra assets to other mods; in Spöökbox's case this means you can create a content pack with music inside!
 
-Follow the [thunderstore guide](https://thunderstore.io/c/content-warning/create/docs/) to create a new mod. Add the dependency string from the [mod's page](https://thunderstore.io/c/content-warning/p/Xerren/ShopAPI/) to the `manifest.json`'s `dependencies` array. Then, in the same folder with all your files, create a `SpookboxMixtape` folder, and copy all your music files into it.
+Follow the [thunderstore guide](https://thunderstore.io/c/content-warning/create/docs/) to create a new mod. Add the dependency string from the [mod's page](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/) to the `manifest.json`'s `dependencies` array. Then, in the same folder with all your files, create a `SpookboxMixtape` folder, and copy all your music files into it.
 
 Zip the entire base directory up (directory with the `icon.png`, `manifest.json`, `readme.md` files and the `SpookboxMixtape` folder), and upload it to Thunderstore. Done! :) Now your friends can download the content mod and be assured that you all share the same tunes.
 
@@ -100,6 +100,8 @@ Sets the boombox's price. By default it is 100$. Only the host can set this. Onc
 
 ## Credits
 
-Model: My dearest friend, Cinnaboop <3
+Model: [My dearest friend, Cinnaboop <3](https://sketchfab.com/3d-models/content-warning-mod-boombox-a62dd39d143c41d18e68ab55de2cb0ca)
+
+Emotional support: Echo (was in the call) :]
 
 Click SFX (slightly edited): Tape Start 139BPM Sync by djlprojects -- https://freesound.org/s/392890/ -- License: Attribution 4.0
