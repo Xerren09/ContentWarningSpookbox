@@ -1,11 +1,12 @@
-﻿using System.Collections;
-using System.Reflection;
+﻿using System.Reflection;
 using UnityEngine;
 using ContentWarningShop;
 using ContentWarningShop.Localisation;
 using Spookbox.Behaviour;
+using System.Collections;
 #if MODMAN
 using BepInEx;
+using HarmonyLib;
 #endif
 
 /*
@@ -42,9 +43,13 @@ namespace Spookbox
         internal static Item _spookboxItem;
         internal const string SPOOKBOX_GUID = "91f31218-6507-4bef-928d-e76b33f44a51";
         internal static AssetBundle _bundle;
+#if MODMAN
+        private static Harmony harmony = new Harmony(MOD_GUID);
+#endif
+
 
 #if STEAM
-        static SpookboxPlugin()
+        static SpookboxPlugin() 
 #elif MODMAN
         void Awake()
 #endif
@@ -53,6 +58,7 @@ namespace Spookbox
             Debug.Log($"{MOD_GUID} initialising via the vanilla mod loader.");
 #elif MODMAN
             Debug.Log($"{MOD_GUID} initialising via BepInEx mod loader.");
+            harmony.PatchAll();
 #endif
             _bundle = LoadAssetBundle();
             _spookboxItem = _bundle.LoadAsset<Item>("Spookbox");
@@ -64,16 +70,21 @@ namespace Spookbox
             _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.Use2Glyph} Next Track");
 
             Mixtape.LoadTracks();
-            
+
+#if STEAM
             GameHandler.Instance.StartCoroutine(Deferred_LoadSettings());
+#endif
+
             Debug.Log($"{MOD_GUID} initialised.");
         }
 
+#if STEAM
         private static IEnumerator Deferred_LoadSettings()
         {
             yield return new WaitUntil(() => GameHandler.Instance.SettingsHandler != null);
-            LoadSettings();
+            InitialiseSettings();
         }
+#endif
 
         private static AssetBundle LoadAssetBundle()
         {

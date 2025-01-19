@@ -6,6 +6,7 @@ namespace Spookbox;
 
 public partial class SpookboxPlugin
 {
+    private static bool _initialised = false;
     private const string ALERT_META_GUID = "bigslapTunes";
     internal static readonly SynchronisedMetadata<bool> AlertMonsters = new($"{MOD_GUID}_{ALERT_META_GUID}", true);
     private static BoomboxAlertSetting _alertSetting;
@@ -16,8 +17,9 @@ public partial class SpookboxPlugin
 
     private static BoomboxPriceSetting _priceSetting;
 
-    private static void LoadSettings()
+    internal static void InitialiseSettings()
     {
+        if (_initialised) return;
         _alertSetting = GameHandler.Instance.SettingsHandler.GetSetting<BoomboxAlertSetting>();
         _alertSetting.Changed += _alertSetting_Changed;
         AlertMonsters.SetValue(_alertSetting.Value);
@@ -29,6 +31,8 @@ public partial class SpookboxPlugin
         _priceSetting = GameHandler.Instance.SettingsHandler.GetSetting<BoomboxPriceSetting>();
         _priceSetting.Changed += _priceSetting_Changed;
         _spookboxItem.price = _priceSetting.Value;
+
+        _initialised = true;
 
         Debug.Log($"{MOD_GUID} settings initialised.");
     }
