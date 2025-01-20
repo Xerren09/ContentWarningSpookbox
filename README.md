@@ -4,9 +4,9 @@ Content Warning Spöökbox
 [![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
 [![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
 [![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
 
 Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
 
