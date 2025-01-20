@@ -1,36 +1,6 @@
 Content Warning Spöökbox
 ===
-
-[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-
-Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
-
-
-## How to install
-
-You can download this mod from either the Steam Workshop or Thunderstore. Please note that you should only download it from one place, otherwise you might run into problems.
-
-> [!IMPORTANT]
-> Everyone in your lobby must have the mod installed for it to work!
-
-### Steam Workshop
-
-Spöökbox is easiest to install from the Steam Workshop. Just go the [mod's Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959) and click Subscribe.
-
-### Thunderstore (r2modman)
-
-If you are using r2modman, search for "spookbox" in the app, or go to [the mod's page directly](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/) and click "Install with Mod Manager".
-
-
-## Dependencies
-
-This mod depends on the [ShopAPI mod](https://github.com/Xerren09/ContentWarningShopAPI) to register itself into the in-game store. If you are installing this mod from the Steam Workshop or Thunderstore, this *should be* resolved and handled automatically.
-
+Adds a silly boombox (The Spöökbox™) to the store so you can dance to any tune you want while going viral :]
 
 ## How to use
 
@@ -38,21 +8,15 @@ This mod depends on the [ShopAPI mod](https://github.com/Xerren09/ContentWarning
 
 Loading music can be done from multiple source directories. Keep in mind that you need to have your own mp3 files for this to work. Once you have the list of music you want to use, the simplest way to load them into the boombox is to go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
 
-> [!IMPORTANT]
+> IMPORTANT
 > Everyone in your lobby must have the same mp3 files! Once you created a good list of tunes, send them to your friends and have them copy them into the above directory.
 
-> [!NOTE]
+> NOTE
 > The maximum number of individual tracks that can be loaded is 255.
 
 If you don't want to use your music folder, you can also use the mod's own tracks folder (note however that this will be deleted along with the mod when you uninstall it):
 
-#### Steam Workshop
-
-Locate your Steam installation folder (by default at `C:\Program Files (x86)\Steam\steamapps`), go to `workshop\content\2881650\3410924959\SpookboxMixtape` and copy-paste your music files.
-
-#### Thunderstore
-
-Once you have Content Warning and your profile selected, go to Settings -> Browse profile folder. From there go to `BepInEx\plugins\Xerren-Spookbox\SpookboxMixtape` and copy-paste your music files. You can also make use of content mods. The boombox's music loader will scan all other mods for directories with the `SpookboxMixtape` name and load all music files within them automatically.
+Once you have Content Warning and your profile selected in r2modman, go to Settings -> Browse profile folder. From there go to `BepInEx\plugins\Xerren-Spookbox\SpookboxMixtape` and copy-paste your music files. You can also make use of content mods. The boombox's music loader will scan all other mods for directories with the `SpookboxMixtape` name and load all music files within them automatically.
 
 ### Thunderstore Content Mods
 
@@ -66,7 +30,7 @@ Zip the entire base directory up (directory with the `icon.png`, `manifest.json`
 
 Tracks are loaded synchronously by default so it may take a few seconds for the game to start up, and it may appear frozen in the meantime. If you have an SSD or only a few songs, add "-ihaveanssd" to the Steam Launch Options for a much faster startup experience.
 
-> [!WARNING]
+> WARNING
 > Setting this flag with a large number of tracks or a slow drive may cause issues; remove the flag and restart the game if you experience desync problems with the music.
 
 
@@ -74,7 +38,7 @@ Tracks are loaded synchronously by default so it may take a few seconds for the 
 
 Settings that affect the experience for *everyone* are designed to be quickly adaptable during gameplay. For example, the host can set the boombox's battery to no longer discharge. This will automatically synchronise for every player in the lobby, but will **not** change your own settings, so while the effect will be the same for every player, visually the toggle may be off in their own settings menu. 
 
-> [!NOTE]
+> NOTE
 > This may be confusing at first glance but it is deliberate, so when the next time you are the one hosting a game, your settings will be unique to you, instead of whatever your friends had. These settings are suffixed with [HOST], meaning only the current lobby's host's changes will have effect; if you are not the host, changing these will do nothing.
 
 ### Local boombox volume
