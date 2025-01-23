@@ -13,6 +13,10 @@ namespace Spookbox.Entries
             get => _trackIndex;
             set
             {
+                if (Mixtape.Tracks.Count == 0)
+                {
+                    return;
+                }
                 _trackIndex = Math.Clamp(value, 0, Mixtape.Tracks.Count-1);
                 TrackName = FormatTrackName();
             } 

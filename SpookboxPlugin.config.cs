@@ -39,13 +39,9 @@ public partial class SpookboxPlugin
 
     private static void _priceSetting_Changed(int obj)
     {
-        if (SynchronisedMetadata<bool>.InLobby == false)
+        if (Shop.UpdateItemPrice(_spookboxItem, obj) == false)
         {
-            _spookboxItem.price = obj;
-        }
-        else
-        {
-            Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while in a lobby. Item price can only be changed outside of the lobby; please restart the lobby to change this setting.");
+            Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
         }
     }
 
