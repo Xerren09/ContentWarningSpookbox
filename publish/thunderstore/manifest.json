@@ -1,6 +1,6 @@
 {
     "name": "Spookbox",
-    "version_number": "1.0.0",
+    "version_number": "1.0.2",
     "website_url": "https://github.com/Xerren09/ContentWarningSpookbox",
     "description": "Adds a silly boombox (The Spöökbox™) to the store so you can dance to any tune you want while going viral :]",
     "dependencies": [
