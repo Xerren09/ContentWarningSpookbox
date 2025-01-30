@@ -61,7 +61,6 @@ namespace Spookbox
                 Tracks.Add(track);
                 Debug.Log($"Added track to mixtape: {track.name}");
             }
-
         }
 
         /// <summary>

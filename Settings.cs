@@ -2,6 +2,7 @@
 using Unity.Mathematics;
 using Zorro.Settings;
 using Spookbox.Entries;
+using ContentWarningShop;
 
 namespace Spookbox.Settings
 {
@@ -85,10 +86,9 @@ namespace Spookbox.Settings
     [ContentWarningSetting]
     public class BoomboxAlertSetting : BoolSetting, IExposedSetting
     {
-        public event Action<bool> Changed;
         public override void ApplyValue()
         {
-            Changed?.Invoke(Value);
+            SpookboxPlugin.AlertMonsters.SetValue(Value);
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
         public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Let BigSlap hear the tunes (Host)";
@@ -108,10 +108,9 @@ namespace Spookbox.Settings
     [ContentWarningSetting]
     public class BoomboxInfiniteBatterySetting : BoolSetting, IExposedSetting
     {
-        public event Action<bool> Changed;
         public override void ApplyValue()
         {
-            Changed?.Invoke(Value);
+            SpookboxPlugin.InfiniteBattery.SetValue(Value);
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
         public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Infinite battery (Host)";
@@ -128,10 +127,12 @@ namespace Spookbox.Settings
     [ContentWarningSetting]
     public class BoomboxPriceSetting : IntSetting, IExposedSetting
     {
-        public event Action<int> Changed;
         public override void ApplyValue()
         {
-            Changed?.Invoke(Value);
+            if (Shop.UpdateItemPrice(SpookboxPlugin._spookboxItem, Value) == false)
+            {
+                Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
+            }
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
         public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Price (Host)";
