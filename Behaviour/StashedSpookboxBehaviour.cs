@@ -11,6 +11,10 @@ namespace Spookbox.Behaviour
         private AudioSource _speaker;
         private BoomboxLocalVolumeSetting _localVolumeSetting;
 
+        private static readonly int _defaultAlertDistance = 35;
+        private float _alertCountdown = 0f;
+        private float _alertInterval = 0.15f;
+
         void Awake()
         {
             _speaker = GetComponent<AudioSource>();
@@ -49,6 +53,15 @@ namespace Spookbox.Behaviour
                     Destroy(gameObject);
                 }
                 _batteryEntry.m_charge -= Time.deltaTime;
+            }
+            if (SpookboxPlugin.AlertMonsters.Value == true)
+            {
+                _alertCountdown -= Time.deltaTime;
+                if (_alertCountdown < 0f)
+                {
+                    SFX_Player.instance.PlayNoise(base.transform.position, _defaultAlertDistance);
+                    _alertCountdown = _alertInterval;
+                }
             }
         }
     }
