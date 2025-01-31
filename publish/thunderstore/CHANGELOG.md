@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## 1.0.3
 - Added missing monster alerts when boombox is stashed
+- Host settings are now correctly applied when you leave a lobby and then host your own
 - Changed mod startup to manually register settings
   - This (hopefully) fixes the surprisingly common scenario where if the mod is installed *after* the game is started, the game doesn't auto register its settings.
 
