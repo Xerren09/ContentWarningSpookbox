@@ -100,7 +100,7 @@ Check this if you don't want the boombox to ever run out of battery. Only the ho
 
 ### [HOST] Price
 
-Sets the boombox's price. By default it is 100$. Only the host can set this. Once a lobby has been created, changing it will have no effect until a new lobby is started, so set this early, before starting a game.
+Sets the boombox's price. By default it is 100$. Only the host can set this, but they may freely change it anytime during the run (which will affect everyone).
 
 
 ## Credits

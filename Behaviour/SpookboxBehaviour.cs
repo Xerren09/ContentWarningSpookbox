@@ -21,6 +21,7 @@ namespace Spookbox.Behaviour
         private BoomboxVolumeUpBindSetting _volumeUpBindSetting;
         private BoomboxVolumeDownBindSetting _volumeDownBindSetting;
 
+        private static readonly int _defaultAlertDistance = 35;
         private float _alertCountdown = 0f;
         private float _alertInterval = 0.15f;
         private int _instanceTrackIndex = -1;
@@ -106,7 +107,7 @@ namespace Spookbox.Behaviour
                 _alertCountdown -= Time.deltaTime;
                 if (_alertCountdown < 0f)
                 {
-                    SFX_Player.instance.PlayNoise(base.transform.position, 35f);
+                    SFX_Player.instance.PlayNoise(base.transform.position, _defaultAlertDistance);
                     _alertCountdown = _alertInterval;
                 }
             }
