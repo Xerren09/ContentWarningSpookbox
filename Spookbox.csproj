@@ -14,8 +14,6 @@
 		<AssemblyName Condition="'$(Configuration)'!='Modman (Release)'">$(AssemblyName)</AssemblyName>
 		<AssemblyName Condition="'$(Configuration)'=='Modman (Release)'">$(AssemblyName).bepinex</AssemblyName>
 		-->
-		<AssemblyVersion>1.0.3.0</AssemblyVersion>
-        <FileVersion>1.0.3.0</FileVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -44,11 +42,15 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.115">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <SteamFiles Include="publish\steam\*.*"/>
-        <ThunderstoreFiles Include="publish\thunderstore\*.*"/>
+        <SteamFiles Include="publish\steam\*.*" />
+        <ThunderstoreFiles Include="publish\thunderstore\*.*" />
     </ItemGroup>
 
     <Target Condition="'$(Configuration)'!='Modman (Release)'" Name="CopyVanillaPlugin" AfterTargets="Build">
@@ -60,19 +62,9 @@
 	</Target>
 
     <Target Condition="'$(Configuration)'=='Modman (Release)'" Name="CreateThunderstorePackage" AfterTargets="CopyBepInExPlugin">
-        <Copy 
-            SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" 
-            DestinationFolder="$(OutputPath)\Package"
-        />
-        <Copy 
-            SourceFiles="$(OutputPath)\$(AssemblyName).dll" 
-            DestinationFiles="$(OutputPath)\$(AssemblyName).bepinex.dll"
-        />
-        <ZipDirectory
-            SourceDirectory="$(OutputPath)\Package"
-            DestinationFile="$(OutputPath)\$(AssemblyName)Package-$(AssemblyVersion).zip"
-            Overwrite="True"
-        />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(OutputPath)\Package" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFiles="$(OutputPath)\$(AssemblyName).bepinex.dll" />
+        <ZipDirectory SourceDirectory="$(OutputPath)\Package" DestinationFile="$(OutputPath)\$(AssemblyName)Package-$(AssemblyVersion).zip" Overwrite="True" />
     </Target>
 
 </Project>
