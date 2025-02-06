@@ -129,6 +129,7 @@ namespace Spookbox.Settings
     {
         public override void ApplyValue()
         {
+            if (SpookboxPlugin._spookboxItem == null) return;
             if (Shop.UpdateItemPrice(SpookboxPlugin._spookboxItem, Value) == false)
             {
                 Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
