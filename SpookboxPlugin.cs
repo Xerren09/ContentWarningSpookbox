@@ -28,7 +28,7 @@ namespace Spookbox
     {
         public const string MOD_GUID = "xerren.cwspookbox";
         public const string MOD_NAME = "Spöökbox";
-        public const string MOD_VER = "1.1.0";
+        public const string MOD_VER = ThisAssembly.AssemblyVersion;
         private const string ASSETBUNDLE_NAME = "spookbox";
         internal static string PluginDirPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
