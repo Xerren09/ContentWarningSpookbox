@@ -26,6 +26,7 @@ namespace Spookbox.Behaviour
 
         private float _alertCountdown = 0f;
         private int _instanceTrackIndex = -1;
+        private float _instanceVolume = 0.5f;
 
         void Awake()
         {
@@ -74,7 +75,12 @@ namespace Spookbox.Behaviour
                     AdjustVolume();
                     ClickButtonSFX();
                 }
+            }
 
+            if (_instanceVolume != _volume.Volume)
+            {
+                AdjustVolume();
+                PlayClickButtonSFX();
             }
 
             if (_onOffEntry.on != _speaker.isPlaying)
@@ -323,10 +329,14 @@ namespace Spookbox.Behaviour
             }
         }
 
+        /// <summary>
+        /// Adjusts the local volume according to <see cref="BoomboxLocalVolumeSetting"/>.
+        /// </summary>
         private void AdjustVolume()
         {
             var vol = _volume.Volume * _localVolumeSetting.Value;
             _speaker.volume = vol;
+            _instanceVolume = _volume.Volume;
         }
     }
 }
