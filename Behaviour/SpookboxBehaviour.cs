@@ -21,9 +21,10 @@ namespace Spookbox.Behaviour
         private BoomboxVolumeUpBindSetting _volumeUpBindSetting;
         private BoomboxVolumeDownBindSetting _volumeDownBindSetting;
 
-        private static readonly int _defaultAlertDistance = 35;
+        private static readonly int DEFAULT_ALERT_DISTANCE = 35;
+        private static readonly float ALERT_INTERVAL = 0.15f;
+
         private float _alertCountdown = 0f;
-        private float _alertInterval = 0.15f;
         private int _instanceTrackIndex = -1;
 
         void Awake()
@@ -42,7 +43,7 @@ namespace Spookbox.Behaviour
 
         void Update()
         {
-            if (isHeldByMe && !Player.localPlayer.HasLockedInput())
+            if (isHeldByMe && !Player.localPlayer.HasLockedInput() && GlobalInputHandler.CanTakeInput())
             {
                 if (Player.localPlayer.input.clickWasPressed)
                 {
@@ -51,7 +52,7 @@ namespace Spookbox.Behaviour
                     // Determines whether the monsters can hear TUCA DONKA
                     if (_onOffEntry.on == true && SpookboxPlugin.AlertMonsters.Value == true)
                     {
-                        _alertCountdown = _alertInterval;
+                        _alertCountdown = ALERT_INTERVAL;
                     }
                     ClickButtonSFX();
                 }
@@ -107,9 +108,9 @@ namespace Spookbox.Behaviour
                 _alertCountdown -= Time.deltaTime;
                 if (_alertCountdown < 0f)
                 {
-                    var scaledAlertDist = _defaultAlertDistance * _volume.Volume;
+                    var scaledAlertDist = DEFAULT_ALERT_DISTANCE * _volume.Volume;
                     SFX_Player.instance.PlayNoise(base.transform.position, scaledAlertDist);
-                    _alertCountdown = _alertInterval;
+                    _alertCountdown = ALERT_INTERVAL;
                 }
             }
 
