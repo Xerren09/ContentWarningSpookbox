@@ -335,7 +335,11 @@ namespace Spookbox.Behaviour
         /// <summary>
         /// Sets the track to the clip at the specific index.
         /// </summary>
-        /// <param name="idx"></param>
+        /// <remarks>
+        /// Will only synchronise settings if the player holding it calls this method.
+        /// </remarks>
+        /// <param name="idx">The index of the track in <see cref="Mixtape.Tracks"/></param>
+        /// <param name="trackTime">The seek time of the track. By default the track will play from the beginning</param>
         private void SetTrack(int idx, float trackTime = 0)
         {
             if (Mixtape.HasTracks() == false)
@@ -361,6 +365,11 @@ namespace Spookbox.Behaviour
             _trackIndex = idx;
         }
 
+        /// <summary>
+        /// Starts playback of the current track if possible. Calling it while playing does nothing.
+        /// </summary>
+        /// <param name="resume"></param>
+        /// <returns>Returns <see langword="true"/> if playback was started.</returns>
         private bool StartPlayback(bool resume = true)
         {
             if (_speaker.isPlaying == false && _onOffEntry.on)
@@ -376,6 +385,10 @@ namespace Spookbox.Behaviour
             return false;
         }
 
+        /// <summary>
+        /// Stops playback of the current track if possible. Calling it while playing does nothing.
+        /// </summary>
+        /// <returns>Returns <see langword="true"/> if playback was stopped.</returns>
         private bool StopPlayback()
         {
             if (_speaker.isPlaying && _onOffEntry.on == false)
