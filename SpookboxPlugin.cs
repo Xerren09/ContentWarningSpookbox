@@ -14,8 +14,8 @@ using Zorro.Settings;
     DONE: Price setting setup
     DONE: Keep the beats flowing even if the boombox is stashed
     DONE: Respect local volume override when detached
-
-    TODO: Scroll to swap tracks
+    DONE: Scroll to swap tracks
+    
     TODO: Right click hold on shoulder - plays louder?
     TODO: Localise strings
 */

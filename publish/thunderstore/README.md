@@ -8,10 +8,10 @@ Adds a silly boombox (The Spöökbox™) to the store so you can dance to any tu
 
 Loading music can be done from multiple source directories. Keep in mind that you need to have your own mp3 files for this to work. Once you have the list of music you want to use, the simplest way to load them into the boombox is to go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
 
-> IMPORTANT
+> **IMPORTANT:**
 > Everyone in your lobby must have the same mp3 files! Once you created a good list of tunes, send them to your friends and have them copy them into the above directory.
 
-> NOTE
+> **NOTE:**
 > The maximum number of individual tracks that can be loaded is 255.
 
 If you don't want to use your music folder, you can also use the mod's own tracks folder (note however that this will be deleted along with the mod when you uninstall it):
@@ -30,7 +30,7 @@ Zip the entire base directory up (directory with the `icon.png`, `manifest.json`
 
 Tracks are loaded synchronously by default so it may take a few seconds for the game to start up, and it may appear frozen in the meantime. If you have an SSD or only a few songs, add "-ihaveanssd" to the Steam Launch Options for a much faster startup experience.
 
-> WARNING
+> **WARNING:**
 > Setting this flag with a large number of tracks or a slow drive may cause issues; remove the flag and restart the game if you experience desync problems with the music.
 
 
@@ -38,7 +38,7 @@ Tracks are loaded synchronously by default so it may take a few seconds for the 
 
 Settings that affect the experience for *everyone* are designed to be quickly adaptable during gameplay. For example, the host can set the boombox's battery to no longer discharge. This will automatically synchronise for every player in the lobby, but will **not** change your own settings, so while the effect will be the same for every player, visually the toggle may be off in their own settings menu. 
 
-> NOTE
+> **NOTE:**
 > This may be confusing at first glance but it is deliberate, so when the next time you are the one hosting a game, your settings will be unique to you, instead of whatever your friends had. These settings are suffixed with [HOST], meaning only the current lobby's host's changes will have effect; if you are not the host, changing these will do nothing.
 
 ### Local boombox volume
