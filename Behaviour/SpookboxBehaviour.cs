@@ -12,13 +12,18 @@ namespace Spookbox.Behaviour
         private static readonly float INPUT_DEBOUNCE_TIME = 0.15f;
         internal static InputActionReference ZoomIn;
         internal static InputActionReference ZoomOut;
+
+        private bool _ready = false;
+
         private GameObject _speakerObject;
         private AudioSource _speaker;
+        private bool isPlaying { get { return _speaker.isPlaying; } }
         private SFX_PlayOneShot _interactSFX;
 
         private BatteryEntry _battery;
         private const float MAX_BATTERY_CHARGE = 180f;
         private OnOffEntry _onOffEntry;
+        private bool isOn { get { return _onOffEntry.on; } }
         private VolumeEntry _volume;
         private TrackEntry _track;
         private TimeEntry _playbackTime;
@@ -31,9 +36,11 @@ namespace Spookbox.Behaviour
         private static readonly float ALERT_INTERVAL = 0.15f;
 
         private float _alertCountdown = 0f;
-        private int _instanceTrackIndex = -1;
+        private int _trackIndex = -1;
         private float _instanceVolume = 0.5f;
         private float _inputDebounceTimer = 0f;
+
+        private bool _ignoreInitialInteractClick = true;
 
         void Awake()
         {
@@ -49,8 +56,61 @@ namespace Spookbox.Behaviour
             _volumeDownBindSetting = GameHandler.Instance.SettingsHandler.GetSetting<BoomboxVolumeDownBindSetting>();
         }
 
+        public override void ConfigItem(ItemInstanceData data, Photon.Pun.PhotonView playerView)
+        {
+            #region DefaultItemConfig
+            if (!data.TryGetEntry(out _battery))
+            {
+                _battery = new BatteryEntry()
+                {
+                    m_maxCharge = MAX_BATTERY_CHARGE,
+                    m_charge = MAX_BATTERY_CHARGE
+                };
+                data.AddDataEntry(_battery);
+            }
+            if (!data.TryGetEntry(out _onOffEntry))
+            {
+                _onOffEntry = new OnOffEntry()
+                {
+                    on = false
+                };
+                data.AddDataEntry(_onOffEntry);
+            }
+            #endregion
+            #region BoomboxConfig
+            if (!data.TryGetEntry(out _volume))
+            {
+                _volume = new VolumeEntry()
+                {
+                    Volume = 0.5f,
+                };
+                data.AddDataEntry(_volume);
+            }
+            AdjustVolume();
+            if (!data.TryGetEntry(out _playbackTime))
+            {
+                _playbackTime = new TimeEntry()
+                {
+                    currentTime = 0f,
+                };
+                data.AddDataEntry(_playbackTime);
+            }
+            if (!data.TryGetEntry(out _track))
+            {
+                _track = new TrackEntry();
+                data.AddDataEntry(_track);
+            }
+            #endregion
+            itemInstance.onItemEquipped.AddListener(OnEquip);
+            itemInstance.onUnequip.AddListener(OnUnequip);
+            //
+            _ready = true;
+        }
+
         void Update()
         {
+            if (_ready == false) return;
+
             // Local player interaction
             _inputDebounceTimer += Time.deltaTime;
             if (isHeldByMe && !Player.localPlayer.HasLockedInput() && GlobalInputHandler.CanTakeInput())
@@ -107,30 +167,39 @@ namespace Spookbox.Behaviour
                 PlayClickButtonSFX();
             }
 
+            if (_trackIndex != _track.TrackIndex)
+            {
+                SetTrack(_track.TrackIndex, _playbackTime.currentTime);
+                if (_ignoreInitialInteractClick == false)
+                {
+                    PlayClickButtonSFX();
+                }
+            }
+
             if (_onOffEntry.on != _speaker.isPlaying)
             {
                 if (_onOffEntry.on)
                 {
-                    _speaker.time = _playbackTime.currentTime;
-                    _speaker.Play();
+                    StartPlayback();
                 }
                 else
                 {
-                    _speaker.Stop();
+                    StopPlayback();
+                }
+                if (_ignoreInitialInteractClick == false)
+                {
+                    PlayClickButtonSFX();
                 }
             }
 
-            // Return if the music is off, the rest of the settings don't need updating
             if (_onOffEntry.on == false)
             {
                 return;
             }
 
-            if (_battery.m_charge < 0f)
+            if (SpookboxPlugin.InfiniteBattery.Value == false)
             {
-                _onOffEntry.on = false;
-                _onOffEntry.SetDirty();
-                ClickButtonSFX();
+                _battery.m_charge -= Time.deltaTime;
             }
 
             if (SpookboxPlugin.AlertMonsters.Value)
@@ -144,25 +213,16 @@ namespace Spookbox.Behaviour
                 }
             }
 
-            if (_instanceTrackIndex != _track.TrackIndex)
+            if (_battery.m_charge < 0f)
             {
-                _instanceTrackIndex = _track.TrackIndex;
-                SetTrack(_instanceTrackIndex, true);
-                if (_onOffEntry.on)
-                {
-                    _speaker.Play();
-                }
-                else
-                {
-                    _speaker.Stop();
-                }
+                _onOffEntry.on = false;
+                _onOffEntry.SetDirty();
+                PlayClickButtonSFX();
+                return;
             }
 
-            if (SpookboxPlugin.InfiniteBattery.Value == false)
-            {
-                _battery.m_charge -= Time.deltaTime;
-            }
             _playbackTime.currentTime = _speaker.time;
+            _ignoreInitialInteractClick = false;
         }
 
         void OnDestroy()
@@ -257,10 +317,8 @@ namespace Spookbox.Behaviour
                 return false;
             }
             var speakerAudio = dSpeaker.GetComponent<AudioSource>();
-            _speaker.clip = speakerAudio.clip;
-            _speaker.time = speakerAudio.time;
             _playbackTime.currentTime = speakerAudio.time;
-            //_playbackTime.SetDirty();
+            SetTrack(_track.TrackIndex, _playbackTime.currentTime);
             Destroy(dSpeaker);
             return true;
         }
@@ -274,75 +332,58 @@ namespace Spookbox.Behaviour
             AdjustVolume();
         }
 
-        public override void ConfigItem(ItemInstanceData data, Photon.Pun.PhotonView playerView)
-        {
-            #region DefaultItemConfig
-            if (!data.TryGetEntry(out _battery))
-            {
-                _battery = new BatteryEntry()
-                {
-                    m_maxCharge = MAX_BATTERY_CHARGE,
-                    m_charge = MAX_BATTERY_CHARGE
-                };
-                data.AddDataEntry(_battery);
-            }
-            if (!data.TryGetEntry(out _onOffEntry))
-            {
-                _onOffEntry = new OnOffEntry()
-                {
-                    on = false
-                };
-                data.AddDataEntry(_onOffEntry);
-            }
-            #endregion
-            #region BoomboxConfig
-            if (!data.TryGetEntry(out _volume))
-            {
-                _volume = new VolumeEntry()
-                {
-                    Volume = 0.5f,
-                };
-                data.AddDataEntry(_volume);
-            }
-            AdjustVolume();
-            if (!data.TryGetEntry(out _track))
-            {
-                _track = new TrackEntry();
-                data.AddDataEntry(_track);
-            }
-            if (!data.TryGetEntry(out _playbackTime))
-            {
-                _playbackTime = new TimeEntry()
-                {
-                    currentTime = 0f,
-                };
-                data.AddDataEntry(_playbackTime);
-            }
-            #endregion
-            itemInstance.onItemEquipped.AddListener(OnEquip);
-            itemInstance.onUnequip.AddListener(OnUnequip);
-        }
-
         /// <summary>
         /// Sets the track to the clip at the specific index.
         /// </summary>
         /// <param name="idx"></param>
-        private void SetTrack(int idx, bool local = false)
+        private void SetTrack(int idx, float trackTime = 0)
         {
-            if (Mixtape.HasTracks())
+            if (Mixtape.HasTracks() == false)
             {
-                if (local == false)
-                {
-                    _playbackTime.currentTime = 0;
-                    _playbackTime.SetDirty();
-                    _track.TrackIndex = idx;
-                    _track.SetDirty();
-                    ClickButtonSFX();
-                }
-                //
-                _speaker.clip = Mixtape.Tracks[_track.TrackIndex];
-                _speaker.time = _playbackTime.currentTime;
+                return;
             }
+            var clip = Mixtape.Tracks[idx];
+            if (clip == _speaker.clip)
+            {
+                return;
+            }
+            if (isHeldByMe)
+            {
+                // Sync to other players
+                _playbackTime.currentTime = trackTime;
+                _playbackTime.SetDirty();
+                _track.TrackIndex = idx;
+                _track.SetDirty();
+            }
+            //
+            _speaker.clip = clip;
+            _speaker.time = trackTime;
+            _trackIndex = idx;
+        }
+
+        private bool StartPlayback(bool resume = true)
+        {
+            if (_speaker.isPlaying == false && _onOffEntry.on)
+            {
+                _speaker.Play();
+                if (resume)
+                {
+                    _speaker.time = _playbackTime.currentTime;
+                }
+                
+                return true;
+            }
+            return false;
+        }
+
+        private bool StopPlayback()
+        {
+            if (_speaker.isPlaying && _onOffEntry.on == false)
+            {
+                _speaker.Stop();
+                return true;
+            }
+            return false;
         }
 
         private void PlayClickButtonSFX()
