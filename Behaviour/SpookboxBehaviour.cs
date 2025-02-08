@@ -1,11 +1,17 @@
 ﻿using Spookbox.Entries;
 using Spookbox.Settings;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Spookbox.Behaviour
 {
     public class SpookboxBehaviour : ItemInstanceBehaviour
     {
+        // Initialised in SpookboxPlugin
+        internal static readonly string INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID = "76f4d02a-65ae-4d8b-89da-1e3e1e82f82d";
+        private static readonly float INPUT_DEBOUNCE_TIME = 0.15f;
+        internal static InputActionReference ZoomIn;
+        internal static InputActionReference ZoomOut;
         private GameObject _speakerObject;
         private AudioSource _speaker;
         private SFX_PlayOneShot _interactSFX;
@@ -27,6 +33,7 @@ namespace Spookbox.Behaviour
         private float _alertCountdown = 0f;
         private int _instanceTrackIndex = -1;
         private float _instanceVolume = 0.5f;
+        private float _inputDebounceTimer = 0f;
 
         void Awake()
         {
@@ -44,6 +51,8 @@ namespace Spookbox.Behaviour
 
         void Update()
         {
+            // Local player interaction
+            _inputDebounceTimer += Time.deltaTime;
             if (isHeldByMe && !Player.localPlayer.HasLockedInput() && GlobalInputHandler.CanTakeInput())
             {
                 if (Player.localPlayer.input.clickWasPressed)
@@ -55,25 +64,40 @@ namespace Spookbox.Behaviour
                     {
                         _alertCountdown = ALERT_INTERVAL;
                     }
-                    ClickButtonSFX();
+                    PlayClickButtonSFX();
+                }
+                float axisRaw = Input.GetAxisRaw("Mouse ScrollWheel");
+                if (_inputDebounceTimer > INPUT_DEBOUNCE_TIME && axisRaw > 0f || ZoomOut.action.WasPressedThisFrame())
+                {
+                    _inputDebounceTimer = 0f;
+                    var newIdx = _track.TrackIndex == 0 ? Mixtape.Tracks.Count-1 : (_track.TrackIndex - 1);
+                    SetTrack((newIdx % Mixtape.Tracks.Count));
+                    PlayClickButtonSFX();
+                }
+                else if (_inputDebounceTimer > INPUT_DEBOUNCE_TIME && axisRaw < 0f || ZoomIn.action.WasPressedThisFrame())
+                {
+                    _inputDebounceTimer = 0f;
+                    SetTrack(((_track.TrackIndex + 1) % Mixtape.Tracks.Count));
+                    PlayClickButtonSFX();
                 }
                 if (Player.localPlayer.input.aimWasPressed)
                 {
                     SetTrack(((_track.TrackIndex + 1) % Mixtape.Tracks.Count));
+                    PlayClickButtonSFX();
                 }
                 if (GlobalInputHandler.GetKeyUp(_volumeUpBindSetting.Keycode()))
                 {
                     _volume.Volume += 0.1f;
                     _volume.SetDirty();
                     AdjustVolume();
-                    ClickButtonSFX();
+                    PlayClickButtonSFX();
                 }
                 if (GlobalInputHandler.GetKeyUp(_volumeDownBindSetting.Keycode()))
                 {
                     _volume.Volume -= 0.1f;
                     _volume.SetDirty();
                     AdjustVolume();
-                    ClickButtonSFX();
+                    PlayClickButtonSFX();
                 }
             }
 
@@ -321,7 +345,7 @@ namespace Spookbox.Behaviour
             }
         }
 
-        private void ClickButtonSFX()
+        private void PlayClickButtonSFX()
         {
             if (_interactSFX != null)
             {
