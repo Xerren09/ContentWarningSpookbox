@@ -42,9 +42,10 @@ namespace Spookbox
                 GameHandler.Instance.StartCoroutine(Deferred_LoadSettings());
 #endif
             }
-            catch
+            catch (Exception ex)
             {
-                Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed: missing ShopAPI? {IsShopApiAssemblyLoaded()}");
+                Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed: missing ShopAPI? {!IsShopApiAssemblyLoaded()}");
+                Debug.LogException(ex);
                 ShowRestartPrompt();
             }
             Debug.Log($"{SpookboxPlugin.MOD_GUID} loaded.");
