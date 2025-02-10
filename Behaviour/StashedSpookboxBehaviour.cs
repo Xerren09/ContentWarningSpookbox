@@ -11,9 +11,9 @@ namespace Spookbox.Behaviour
         private AudioSource _speaker;
         private BoomboxLocalVolumeSetting _localVolumeSetting;
 
-        private static readonly int _defaultAlertDistance = 35;
+        private static readonly int DEFAULT_ALERT_DISTANCE = 35;
+        private static readonly float ALERT_INTERVAL = 0.15f;
         private float _alertCountdown = 0f;
-        private float _alertInterval = 0.15f;
 
         void Awake()
         {
@@ -59,8 +59,9 @@ namespace Spookbox.Behaviour
                 _alertCountdown -= Time.deltaTime;
                 if (_alertCountdown < 0f)
                 {
-                    SFX_Player.instance.PlayNoise(base.transform.position, _defaultAlertDistance);
-                    _alertCountdown = _alertInterval;
+                    var scaledAlertDist = DEFAULT_ALERT_DISTANCE * _volume;
+                    SFX_Player.instance.PlayNoise(base.transform.position, scaledAlertDist);
+                    _alertCountdown = ALERT_INTERVAL;
                 }
             }
         }

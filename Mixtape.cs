@@ -16,6 +16,7 @@ namespace Spookbox
         public static readonly List<AudioClip> Tracks = new();
         public static int Length => Tracks.Count;
 
+        private static Coroutine? _loaderRoutine;
         /// <summary>
         /// Checks if any tracks are loaded.
         /// </summary>
