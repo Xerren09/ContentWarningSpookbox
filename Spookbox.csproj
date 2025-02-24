@@ -8,11 +8,11 @@
         <LangVersion>latest</LangVersion>
 		<CWDir Condition=" '$(CWDir)' == '' And Exists('E:\SteamLibrary\steamapps\common\Content Warning') ">E:\SteamLibrary\steamapps\common\Content Warning</CWDir>
         <CWDir Condition=" '$(CWDir)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Content Warning</CWDir>
-        <Configurations>Debug;Release;Modman (Release)</Configurations>
+        <Configurations>Debug;Release;Modman</Configurations>
 		
 		<!-- 
-		<AssemblyName Condition="'$(Configuration)'!='Modman (Release)'">$(AssemblyName)</AssemblyName>
-		<AssemblyName Condition="'$(Configuration)'=='Modman (Release)'">$(AssemblyName).bepinex</AssemblyName>
+		<AssemblyName Condition="'$(Configuration)'!='Modman'">$(AssemblyName)</AssemblyName>
+		<AssemblyName Condition="'$(Configuration)'=='Modman'">$(AssemblyName).bepinex</AssemblyName>
 		-->
     </PropertyGroup>
 
@@ -24,13 +24,14 @@
       <DefineConstants>$(DefineConstants);STEAM</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modman (Release)|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modman|AnyCPU'">
       <DefineConstants>$(DefineConstants);MODMAN</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
-		<Reference Condition="'$(Configuration)'=='Modman (Release)'" Private="false" Include="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\core\BepInEx.dll" />
 		<Reference Private="false" Include=".\..\ContentWarningShopAPI\bin\$(Configuration)\netstandard2.1\ShopAPI.dll" />
+		<Reference Condition="'$(Configuration)'=='Modman'" Private="false" Include="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\core\BepInEx.dll" />
+
 		
         <Reference Include="$(CWDir)\Content Warning_Data\Managed\*.dll" Private="false" Publicize="True" />
     </ItemGroup>
@@ -53,15 +54,15 @@
         <ThunderstoreFiles Include="publish\thunderstore\*.*" />
     </ItemGroup>
 
-    <Target Condition="'$(Configuration)'!='Modman (Release)'" Name="CopyVanillaPlugin" AfterTargets="Build">
+    <Target Condition="'$(Configuration)'!='Modman'" Name="CopyVanillaPlugin" AfterTargets="Build">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWDir)\Plugins\$(MSBuildProjectName)" />
     </Target>
 
-	<Target Condition="'$(Configuration)'=='Modman (Release)'" Name="CopyBepInExPlugin" AfterTargets="Build">
+	<Target Condition="'$(Configuration)'=='Modman'" Name="CopyBepInExPlugin" AfterTargets="Build">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\plugins\$(MSBuildProjectName)" />
 	</Target>
 
-    <Target Condition="'$(Configuration)'=='Modman (Release)'" Name="CreateThunderstorePackage" AfterTargets="CopyBepInExPlugin">
+    <Target Condition="'$(Configuration)'=='Modman'" Name="CreateThunderstorePackage" AfterTargets="CopyBepInExPlugin">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(OutputPath)\Package" />
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFiles="$(OutputPath)\$(AssemblyName).bepinex.dll" />
         <ZipDirectory SourceDirectory="$(OutputPath)\Package" DestinationFile="$(OutputPath)\$(AssemblyName)Package-$(AssemblyVersion).zip" Overwrite="True" />

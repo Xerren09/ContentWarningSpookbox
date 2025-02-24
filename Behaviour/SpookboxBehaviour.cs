@@ -180,11 +180,11 @@ namespace Spookbox.Behaviour
             {
                 if (_onOffEntry.on)
                 {
-                    StartPlayback();
+                    TryStartPlayback();
                 }
                 else
                 {
-                    StopPlayback();
+                    TryStopPlayback();
                 }
                 if (_ignoreInitialInteractClick == false)
                 {
@@ -270,7 +270,7 @@ namespace Spookbox.Behaviour
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        private GameObject GetDetachedSpeaker(Player player)
+        private GameObject TryGetDetachedSpeaker(Player player)
         {
             var speakerName = $"__spookbox_speaker_{itemInstance.m_guid.Value}";
             var target = player.refs.cameraPos;
@@ -311,7 +311,7 @@ namespace Spookbox.Behaviour
         /// <param name="player"></param>
         private bool TryReattachSpeaker(Player player)
         {
-            var dSpeaker = GetDetachedSpeaker(player);
+            var dSpeaker = TryGetDetachedSpeaker(player);
             if (dSpeaker == null)
             {
                 return false;
@@ -370,7 +370,7 @@ namespace Spookbox.Behaviour
         /// </summary>
         /// <param name="resume"></param>
         /// <returns>Returns <see langword="true"/> if playback was started.</returns>
-        private bool StartPlayback(bool resume = true)
+        private bool TryStartPlayback(bool resume = true)
         {
             if (_speaker.isPlaying == false && _onOffEntry.on)
             {
@@ -379,7 +379,6 @@ namespace Spookbox.Behaviour
                 {
                     _speaker.time = _playbackTime.currentTime;
                 }
-                
                 return true;
             }
             return false;
@@ -389,7 +388,7 @@ namespace Spookbox.Behaviour
         /// Stops playback of the current track if possible. Calling it while playing does nothing.
         /// </summary>
         /// <returns>Returns <see langword="true"/> if playback was stopped.</returns>
-        private bool StopPlayback()
+        private bool TryStopPlayback()
         {
             if (_speaker.isPlaying && _onOffEntry.on == false)
             {
