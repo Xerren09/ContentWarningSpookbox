@@ -11,7 +11,7 @@ namespace Spookbox
     [ContentWarningPlugin(SpookboxPlugin.MOD_GUID, SpookboxPlugin.MOD_VER, false)]
 #if MODMAN
     [BepInPlugin(SpookboxPlugin.MOD_GUID, SpookboxPlugin.MOD_NAME, SpookboxPlugin.MOD_VER)]
-    [BepInDependency(ShopApiPlugin.MOD_GUID, "1.1")]
+    [BepInDependency(ShopApiPlugin.MOD_GUID, "1.2")]
 #endif
     public class PluginLoader
 #if MODMAN
@@ -35,7 +35,7 @@ namespace Spookbox
 #endif
             try
             {
-                // Deferes the type resolver to the lambda, so *that* faults if ShopAPI is missing, not the current method, allowing it to be caught.
+                // Defers the type resolver to the lambda, so *that* faults if ShopAPI is missing, not the current method, allowing it to be caught.
                 Action proxyCall = () => { SpookboxPlugin.InitialisePlugin(); };
                 proxyCall();
 #if STEAM
