@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Spookbox
@@ -7,7 +8,13 @@ namespace Spookbox
     {
         public const string ASYNC_LOAD_ENV = "-ihaveanssd";
         public const string TRACKS_DIR_NAME = "SpookboxMixtape";
-        private static bool _asyncLoadTracks = false;
+        /// <summary>
+        /// Determines if audio clips should be streamed or loaded into memory.
+        /// </summary>
+        /// <remarks>
+        /// When streaming is used, a high number if concurrent playbacks can cause severe FPS drops and audio degradation.
+        /// </remarks>
+        private static bool _asyncLoadTracks => Environment.GetCommandLineArgs().Contains(ASYNC_LOAD_ENV);
         /// <summary>
         /// The maximum number of tracks the mod will load. Realistically this is more than reasonable, but also
         /// it is set to ensure the track index can be encoded into a single byte during network synchronisation.
@@ -16,7 +23,11 @@ namespace Spookbox
         public static readonly List<AudioClip> Tracks = new();
         public static int Length => Tracks.Count;
 
-        private static Coroutine? _loaderRoutine;
+        /// <summary>
+        /// Flag to ensure only one load operation can run at a time.
+        /// </summary>
+        private static bool _isLoading = false;
+
         /// <summary>
         /// Checks if any tracks are loaded.
         /// </summary>
@@ -27,16 +38,25 @@ namespace Spookbox
         }
 
         /// <summary>
-        /// Wipes the current music list and loads all music tracks.
+        /// Wipes the current music list and synchronously loads all music tracks.
         /// </summary>
         /// <remarks>
         /// Note that the number of tracks loaded will not exceed <see cref="MAX_TRACKS"/>.
         /// </remarks>
         public static void LoadTracks()
         {
-            _asyncLoadTracks = Environment.GetCommandLineArgs().Contains(ASYNC_LOAD_ENV);
+            if (_isLoading)
+            {
+                Debug.LogWarning("Spookbox mixtape is already loading tracks.");
+                return;
+            }
+            _isLoading = true;
             Debug.Log($"Async load audio clips ({ASYNC_LOAD_ENV} flag) : {_asyncLoadTracks}");
-            //
+            // Cleanup old tracks
+            foreach(var clip in Tracks)
+            {
+                clip.UnloadAudioData();
+            }
             Tracks.Clear();
             var files = GetAllTracks();
             Debug.Log($"{files.Count} potential mixtape tracks found.");
@@ -56,6 +76,7 @@ namespace Spookbox
                 var track = LoadAudioClipFromFile(file, GetAudioType(file));
                 if (track == null)
                 {
+                    Debug.LogWarning($"Track \"{file}\" skipped due to an error.");
                     continue;
                 }
                 track.name = Path.GetFileNameWithoutExtension(file);
@@ -63,13 +84,83 @@ namespace Spookbox
                 Debug.Log($"Added track to mixtape: {track.name}");
             }
             Debug.Log($"Loaded {Tracks.Count} tracks to the Mixtape.");
+            _isLoading = false;
         }
+
+        /*
+
+        /// <summary>
+        /// Wipes the current music list and asynchronously loads all music tracks in a coroutine.
+        /// </summary>
+        /// <remarks>
+        /// Note that the number of tracks loaded will not exceed <see cref="MAX_TRACKS"/>.
+        /// </remarks>
+        public static void LoadTracksAsync()
+        {
+            if (_isLoading)
+            {
+                Debug.LogWarning("Spookbox mixtape is already loading tracks.");
+                return;
+            }
+            _isLoading = true;
+            Debug.Log($"Mixtape loading via GameHandler coroutine:");
+            GameHandler.Instance.StartCoroutine(LoadTracksRoutine());
+        }
+
+        private static IEnumerator LoadTracksRoutine()
+        {
+            Tracks.Clear();
+            var files = GetAllTracks();
+            Debug.Log($"{files.Count} potential mixtape tracks found.");
+            foreach (var file in files)
+            {
+                if (Tracks.Count == MAX_TRACKS)
+                {
+                    Debug.LogWarning($"Mixtape full: maximum track count limit reached ({MAX_TRACKS}).");
+                    break;
+                }
+                var type = GetAudioType(file);
+                if (type == AudioType.UNKNOWN)
+                {
+                    Debug.LogWarning($"Track \"{file}\" could not be loaded due to unsupported audio type.");
+                    continue;
+                }
+                AudioClip track = null;
+                using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(file, type))
+                {
+                    ((DownloadHandlerAudioClip)req.downloadHandler).compressed = true;
+                    //
+                    yield return req.SendWebRequest();
+                    //
+                    if (req.result == UnityWebRequest.Result.Success)
+                    {
+                        track = DownloadHandlerAudioClip.GetContent(req);
+                    }
+                    else
+                    {
+                        Debug.LogError($"Loading AudioClip failed:");
+                        Debug.LogError(req.error);
+                    }
+                }
+                if (track == null)
+                {
+                    continue;
+                }
+                track.name = Path.GetFileNameWithoutExtension(file);
+                Tracks.Add(track);
+                Debug.Log($"Added track to mixtape: {track.name}");
+            }
+            Debug.Log($"Loaded {Tracks.Count} tracks to the Mixtape.");
+            _isLoading = false;
+        }
+
+        */
 
         /// <summary>
         /// Gets the path to the main directory where users can put their custom songs into.
         /// </summary>
         /// <returns></returns>
-        private static string GetUserMusicDirPath()
+        internal static string GetUserMusicDirPath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), TRACKS_DIR_NAME);
         }
@@ -78,10 +169,11 @@ namespace Spookbox
         /// Gets the path to the mod's own music directory. This is gone once the mod is uninstalled.
         /// </summary>
         /// <remarks>
+        /// This is located in the directory with the mod's DLL, at the subfolder <see cref="TRACKS_DIR_NAME"/>.
         /// Creates the directory if it doesn't already exists.
         /// </remarks>
         /// <returns></returns>
-        private static string GetPluginMusicDirPath()
+        internal static string GetPluginMusicDirPath()
         {
             var dirPath = Path.GetFullPath(Path.Combine(SpookboxPlugin.PluginDirPath, TRACKS_DIR_NAME));
             if (Directory.Exists(dirPath) == false)
@@ -159,6 +251,10 @@ namespace Spookbox
             {
                 ((DownloadHandlerAudioClip)req.downloadHandler).streamAudio = true;
             }
+            else
+            {
+                ((DownloadHandlerAudioClip)req.downloadHandler).compressed = true;
+            }
             try
             {
                 req.SendWebRequest();
@@ -168,7 +264,11 @@ namespace Spookbox
                     { }
                     if (req.result == UnityWebRequest.Result.Success)
                     {
-                        ret = DownloadHandlerAudioClip.GetContent(req);
+                        var clip = DownloadHandlerAudioClip.GetContent(req);
+                        if (clip.length != 0)
+                        {
+                            ret = clip;
+                        }
                     }
                     else
                     {
