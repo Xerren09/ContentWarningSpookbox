@@ -3,6 +3,7 @@ using Unity.Mathematics;
 using Zorro.Settings;
 using Spookbox.Entries;
 using ContentWarningShop;
+using System.Diagnostics;
 
 namespace Spookbox.Settings
 {
@@ -132,7 +133,7 @@ namespace Spookbox.Settings
             if (SpookboxPlugin._spookboxItem == null) return;
             if (Shop.UpdateItemPrice(SpookboxPlugin._spookboxItem, Value) == false)
             {
-                Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
+                UnityEngine.Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
             }
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
