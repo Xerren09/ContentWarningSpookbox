@@ -97,6 +97,9 @@ namespace Spookbox
             InitialiseGameSetting<BoomboxAlertSetting>();
             InitialiseGameSetting<BoomboxInfiniteBatterySetting>();
             InitialiseGameSetting<BoomboxPriceSetting>();
+            // "Fake" settings
+            InitialiseGameSetting<BoomboxOpenTracksFolderSetting>();
+            InitialiseGameSetting<BoomboxRescanMixtapeFolderSetting>();
 
             _initialisedSettings = true;
 

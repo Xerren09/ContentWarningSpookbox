@@ -144,4 +144,50 @@ namespace Spookbox.Settings
             return 100;
         }
     }
+
+    /// <summary>
+    /// Opens the plugin's own music directory in the explorer. See <see cref="Mixtape.GetPluginMusicDirPath"/>.
+    /// </summary>
+    [ContentWarningSetting]
+    public class BoomboxOpenTracksFolderSetting : ButtonSetting, IExposedSetting
+    {
+        public override string GetButtonText() => "Open";
+
+        public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Open music folder";
+
+        public override void OnClick()
+        {
+            UnityEngine.Debug.Log($"Opening music dir: {Mixtape.GetPluginMusicDirPath()}");
+            Process.Start("explorer.exe", Mixtape.GetPluginMusicDirPath());
+        }
+
+        public SettingCategory GetSettingCategory() => SettingCategory.Mods;
+
+        public override void ApplyValue() { }
+
+        public override void Load(ISettingsSaveLoad loader) { }
+
+        public override void Save(ISettingsSaveLoad saver) { }
+    }
+
+    /// <summary>
+    /// Forces a full music rescan via <see cref="Mixtape.LoadTracks"/>.
+    /// </summary>
+    [ContentWarningSetting]
+    public class BoomboxRescanMixtapeFolderSetting : ButtonSetting, IExposedSetting
+    {
+        public override string GetButtonText() => "Rescan";
+
+        public string GetDisplayName() => $"[{SpookboxPlugin.MOD_NAME}] Reload music";
+
+        public SettingCategory GetSettingCategory() => SettingCategory.Mods;
+
+        public override void OnClick() => Mixtape.LoadTracks();
+
+        public override void ApplyValue() { }
+
+        public override void Load(ISettingsSaveLoad loader) { }
+
+        public override void Save(ISettingsSaveLoad saver) { }
+    }
 }
