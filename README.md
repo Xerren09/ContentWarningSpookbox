@@ -1,11 +1,11 @@
 Content Warning Spöökbox
 ===
 
-[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=for-the-badge&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=for-the-badge&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=for-the-badge&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=for-the-badge&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=for-the-badge&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
 
 Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
 
@@ -35,7 +35,9 @@ This mod depends on the [ShopAPI mod](https://github.com/Xerren09/ContentWarning
 
 ### Loading music
 
-Loading music can be done from multiple source directories. Keep in mind that you need to have your own mp3 files for this to work. Once you have the list of music you want to use, the simplest way to load them into the boombox is to go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
+Loading music can be done from multiple source directories. **Keep in mind that you need to have your own mp3 files for this to work.** 
+
+Once you have the list of music you want to use, the simplest way to load them into the boombox is to go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
 
 > [!IMPORTANT]
 > Everyone in your lobby must have the same mp3 files! Once you created a good list of tunes, send them to your friends and have them copy them into the above directory.
