@@ -65,8 +65,6 @@ namespace Spookbox
             _spookboxItem = _bundle.LoadAsset<Item>("Spookbox");
             _spookboxItem.itemObject.AddComponent<SpookboxBehaviour>();
 
-            RetrieveWheelActions();
-
             Shop.RegisterItem(_spookboxItem);
             Shop.RegisterCustomDataEntries();
 
@@ -126,14 +124,6 @@ namespace Spookbox
         {
             var path = Path.Join(PluginDirPath, ASSETBUNDLE_NAME);
             _bundle = AssetBundle.LoadFromFile(path);
-        }
-
-        private static void RetrieveWheelActions()
-        {
-            ItemDatabase.TryGetItemFromPersistentID(new Guid(SpookboxBehaviour.INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
-            var cam = camItem.itemObject.GetComponent<VideoCamera>();
-            SpookboxBehaviour.ZoomIn = cam.m_cameraZoomIn;
-            SpookboxBehaviour.ZoomOut = cam.m_cameraZoomOut;
         }
     }
 }

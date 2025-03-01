@@ -8,10 +8,18 @@ namespace Spookbox.Behaviour
     public class SpookboxBehaviour : ItemInstanceBehaviour
     {
         // Initialised in SpookboxPlugin
-        internal static readonly string INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID = "76f4d02a-65ae-4d8b-89da-1e3e1e82f82d";
+        private static readonly string INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID = "76f4d02a-65ae-4d8b-89da-1e3e1e82f82d";
         private static readonly float INPUT_DEBOUNCE_TIME = 0.15f;
-        internal static InputActionReference ZoomIn;
-        internal static InputActionReference ZoomOut;
+        private static InputActionReference ZoomIn;
+        private static InputActionReference ZoomOut;
+
+        static SpookboxBehaviour()
+        {
+            ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
+            var cam = camItem.itemObject.GetComponent<VideoCamera>();
+            ZoomIn = cam.m_cameraZoomIn;
+            ZoomOut = cam.m_cameraZoomOut;
+        }
 
         private bool _ready = false;
 
