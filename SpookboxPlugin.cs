@@ -56,6 +56,9 @@ namespace Spookbox
         private const string INF_BATTERY_META_GUID = "infiniteBattery";
         internal static readonly SynchronisedMetadata<bool> InfiniteBattery = new($"{MOD_GUID}_{INF_BATTERY_META_GUID}", false);
 
+        /// <summary>
+        /// Loads the basics of the mod, initialises the Spöökbox item.
+        /// </summary>
         internal static void InitialisePlugin()
         {
             if (_initialised)
@@ -76,11 +79,19 @@ namespace Spookbox
             Debug.Log($"{MOD_GUID} setup complete.");
         }
 
+        /// <summary>
+        /// Ensures all settings are loaded.
+        /// </summary>
+        /// <remarks>
+        /// This is mainly important for the scenario where the player installed the mod after the game was launched,
+        /// as settings are not loaded into the global settings repository in that workflow.
+        /// </remarks>
         internal static void InitialiseSettings()
         {
             if (_initialisedSettings)
                 return;
 
+            // Detect local lobby creation so we can overwrite any potential leftover settings
             cb_onLobbyCreated = Callback<LobbyCreated_t>.Create(Steam_LobbyCreated);
 
             InitialiseGameSetting<BoomboxAlertSetting>();
@@ -103,6 +114,10 @@ namespace Spookbox
             ApplyGameSetting<BoomboxPriceSetting>();
         }
 
+        /// <summary>
+        /// Add a setting to <see cref="SettingsHandler"/> if an instance has not been added already.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         private static void InitialiseGameSetting<T>() where T : Setting, new()
         {
             if (GameHandler.Instance.SettingsHandler.GetSetting<T>() == null)
@@ -111,6 +126,10 @@ namespace Spookbox
             }
         }
 
+        /// <summary>
+        /// Force applies the current value of the setting, re-triggering its effects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         private static void ApplyGameSetting<T>() where T : Setting, new()
         {
             var setting = GameHandler.Instance.SettingsHandler.GetSetting<T>();
