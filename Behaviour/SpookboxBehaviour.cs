@@ -40,8 +40,6 @@ namespace Spookbox.Behaviour
         private float _instanceVolume = 0.5f;
         private float _inputDebounceTimer = 0f;
 
-        private bool _ignoreInitialInteractClick = true;
-
         void Awake()
         {
             _speakerObject = transform.Find("SFX/SpookboxSpeaker").gameObject;
@@ -170,7 +168,7 @@ namespace Spookbox.Behaviour
             if (_trackIndex != _track.TrackIndex)
             {
                 SetTrack(_track.TrackIndex, _playbackTime.currentTime);
-                if (_ignoreInitialInteractClick == false)
+                if (isHeld && isHeldByMe == false)
                 {
                     PlayClickButtonSFX();
                 }
@@ -186,7 +184,7 @@ namespace Spookbox.Behaviour
                 {
                     TryStopPlayback();
                 }
-                if (_ignoreInitialInteractClick == false)
+                if (isHeld && isHeldByMe == false)
                 {
                     PlayClickButtonSFX();
                 }
@@ -222,7 +220,6 @@ namespace Spookbox.Behaviour
             }
 
             _playbackTime.currentTime = _speaker.time;
-            _ignoreInitialInteractClick = false;
         }
 
         void OnDestroy()
@@ -238,6 +235,8 @@ namespace Spookbox.Behaviour
             {
                 Debug.Log($"Spöökbox speaker reattached: {itemInstance.instanceData.m_guid}");
             }
+            SetTrack(_track.TrackIndex, _playbackTime.currentTime);
+            TryStartPlayback();
         }
 
         private void OnUnequip(Player player)
@@ -318,7 +317,6 @@ namespace Spookbox.Behaviour
             }
             var speakerAudio = dSpeaker.GetComponent<AudioSource>();
             _playbackTime.currentTime = speakerAudio.time;
-            SetTrack(_track.TrackIndex, _playbackTime.currentTime);
             Destroy(dSpeaker);
             return true;
         }
