@@ -9,11 +9,6 @@
 		<CWDir Condition=" '$(CWDir)' == '' And Exists('E:\SteamLibrary\steamapps\common\Content Warning') ">E:\SteamLibrary\steamapps\common\Content Warning</CWDir>
         <CWDir Condition=" '$(CWDir)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Content Warning</CWDir>
         <Configurations>Debug;Release;Modman</Configurations>
-		
-		<!-- 
-		<AssemblyName Condition="'$(Configuration)'!='Modman'">$(AssemblyName)</AssemblyName>
-		<AssemblyName Condition="'$(Configuration)'=='Modman'">$(AssemblyName).bepinex</AssemblyName>
-		-->
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,16 +24,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-		<Reference Private="false" Include=".\..\ContentWarningShopAPI\bin\$(Configuration)\netstandard2.1\ShopAPI.dll" />
 		<Reference Condition="'$(Configuration)'=='Modman'" Private="false" Include="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\core\BepInEx.dll" />
-
-		
         <Reference Include="$(CWDir)\Content Warning_Data\Managed\*.dll" Private="false" Publicize="True" />
     </ItemGroup>
 	
-	<!-- Use BepInEx's Assembly Publicizer to tell the compiler & IDE that every field, method, etc. is public, in the game assemblies. -->
-    <!-- This makes it easier to change fields and call methods that would otherwise be private. -->
     <ItemGroup>
+        <!-- Use BepInEx's Assembly Publicizer to tell the compiler & IDE that every field, method, etc. is public, in the game assemblies. -->
+        <!-- This makes it easier to change fields and call methods that would otherwise be private. -->
       <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -47,6 +39,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Xerren.ContentWarning.ShopAPI" Version="1.2.14" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
@@ -54,18 +47,39 @@
         <ThunderstoreFiles Include="publish\thunderstore\*.*" />
     </ItemGroup>
 
-    <Target Condition="'$(Configuration)'!='Modman'" Name="CopyVanillaPlugin" AfterTargets="Build">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWDir)\Plugins\$(MSBuildProjectName)" />
+    <PropertyGroup>
+        <CWPluginOutputPath>$(CWDir)\Plugins\$(MSBuildProjectName)</CWPluginOutputPath>
+        <ModmanPluginOutputPath>$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\plugins\$(MSBuildProjectName)</ModmanPluginOutputPath>
+    </PropertyGroup>
+
+    <!-- Deploy only Steam-Debug files to vanilla local plugins dir -->
+    <Target Condition="'$(Configuration)'=='Debug'" Name="CopyDebugVanillaPlugin" AfterTargets="Build">
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb" DestinationFolder="$(CWPluginOutputPath)" />
+        <Message Text="Steam-Debug build copied to $(CWPluginOutputPath)" Importance="high" />
     </Target>
 
-	<Target Condition="'$(Configuration)'=='Modman'" Name="CopyBepInExPlugin" AfterTargets="Build">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\plugins\$(MSBuildProjectName)" />
-	</Target>
 
+    <!-- Deploy full Steam-Release build and files to vanilla local plugins dir for Workshop publish -->
+    <Target Condition="'$(Configuration)'=='Release'" Name="CopyReleaseVanillaPlugin" AfterTargets="Build">
+        <!-- Create SteamCMD publish package -->
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(OutputPath)\Publish" />
+        <!-- Clear Steam Workshop deploy folder -->
+        <RemoveDir Directories="$(CWPluginOutputPath)" />
+        <Message Text="Cleaned $(CWPluginOutputPath)" Importance="high" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWPluginOutputPath)" />
+        <Message Text="Steam-Release package copied to $(CWPluginOutputPath)" Importance="high" />
+    </Target>
+
+    <!-- Deploy only Modman-Debug files to default profile -->
+    <Target Condition="'$(Configuration)'=='Modman'" Name="CopyBepInExPlugin" AfterTargets="Build">
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb;@(ThunderstoreFiles)" DestinationFolder="$(ModmanPluginOutputPath)" />
+        <Message Text="Modman-Debug build copied to $(ModmanPluginOutputPath)" Importance="high" />
+    </Target>
+
+    <!-- Package full Modman-Release build and files for Thunderstore -->
     <Target Condition="'$(Configuration)'=='Modman'" Name="CreateThunderstorePackage" AfterTargets="CopyBepInExPlugin">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(OutputPath)\Package" />
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFiles="$(OutputPath)\$(AssemblyName).bepinex.dll" />
-        <ZipDirectory SourceDirectory="$(OutputPath)\Package" DestinationFile="$(OutputPath)\$(AssemblyName)Package-$(AssemblyVersion).zip" Overwrite="True" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(OutputPath)\Publish\Package" />
+        <ZipDirectory SourceDirectory="$(OutputPath)\Publish\Package" DestinationFile="$(OutputPath)\Publish\$(AssemblyName).ThunderstorePackage.$(AssemblyVersion).zip" Overwrite="True" />
+        <Message Text="Modman-Release Thunderstore package packed: $(AssemblyName).ThunderstorePackage.$(AssemblyVersion).zip" Importance="high" />
     </Target>
-
 </Project>
