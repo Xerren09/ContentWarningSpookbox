@@ -1,12 +1,11 @@
 Content Warning Spöökbox
 ===
 
-[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=flat-square&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=flat-square&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=flat-square&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Likes](https://img.shields.io/thunderstore/likes/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Likes)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/Spookbox?style=flat-square&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Steam Downloads](https://img.shields.io/steam/downloads/3410924959?style=for-the-badge&logo=steam&label=Downloads)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/3410924959?style=for-the-badge&logo=steam&label=Subscriptions)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Steam Last Update Date](https://img.shields.io/steam/update-date/3410924959?style=for-the-badge&logo=steam&label=Updated)](https://steamcommunity.com/sharedfiles/filedetails/?id=3410924959)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/Xerren/ShopAPI?style=for-the-badge&logo=thunderstore&label=Downloads)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/Xerren/ShopAPI?style=for-the-badge&logo=thunderstore&label=Version)](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/)
 
 Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
 
@@ -41,7 +40,7 @@ This mod depends on the [ShopAPI mod](https://github.com/Xerren09/ContentWarning
 
 ### Loading music
 
-Loading music can be done from multiple source directories. Keep in mind that you need to have your own mp3 files for this to work. Once you have the list of music you want to use, the simplest way to load them into the boombox is to go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
+Loading music can be done from multiple source directories at the same time. **Keep in mind that you need to have your own mp3 files for this to work.** 
 
 > [!IMPORTANT]
 > Everyone in your lobby must have the same mp3 files! Once you created a good list of tunes, send them to your friends and have them copy them into the above directory.
@@ -49,31 +48,27 @@ Loading music can be done from multiple source directories. Keep in mind that yo
 > [!NOTE]
 > The maximum number of individual tracks that can be loaded is 255.
 
-If you don't want to use your music folder, you can also use the mod's own tracks folder (note however that this will be deleted along with the mod when you uninstall it):
+Once you have the list of music you want to use, there are two easy ways to load them into the boombox:
+1. Go to your Music folder (`%userprofile%\Music`), create a folder called `SpookboxMixtape`, and copy your files in there.
+2. Launch the game, open Settings > Mods, and click the `Open music folder` setting. This will open the mod's own music directory. Do note that this folder will be deleted when you uninstall the mod.
+   - This folder changes depending on the version of the mod you use. For the steam version, it will be in your Steam Library folder (by default at `C:\Program Files (x86)\Steam\steamapps\workshop\content\2881650\3410924959\SpookboxMixtape`) 
+   - For the Thunderstore version it will be at your profile's plugins folder, in the mod's own folder
 
-#### Steam Workshop
+> [!IMPORTANT]
+> If you have the game open while adding or removing tracks. make sure to click the `Reload music` setting to have your changes take effect.
 
-Locate your Steam installation folder (by default at `C:\Program Files (x86)\Steam\steamapps`), go to `workshop\content\2881650\3410924959\SpookboxMixtape` and copy-paste your music files.
 
-#### Thunderstore
+### Thunderstore
 
 Once you have Content Warning and your profile selected, go to Settings -> Browse profile folder. From there go to `BepInEx\plugins\Xerren-Spookbox\SpookboxMixtape` and copy-paste your music files. You can also make use of content mods. The boombox's music loader will scan all other mods for directories with the `SpookboxMixtape` name and load all music files within them automatically.
 
-### Thunderstore Content Mods
+#### Content Mods
 
 If you are using Thunderstore, you can also create content mods. These mods don't add extra functionality, but can provide extra assets to other mods; in Spöökbox's case this means you can create a content pack with music inside!
 
 Follow the [thunderstore guide](https://thunderstore.io/c/content-warning/create/docs/) to create a new mod. Add the dependency string from the [mod's page](https://thunderstore.io/c/content-warning/p/Xerren/Spookbox/) to the `manifest.json`'s `dependencies` array. Then, in the same folder with all your files, create a `SpookboxMixtape` folder, and copy all your music files into it.
 
 Zip the entire base directory up (directory with the `icon.png`, `manifest.json`, `readme.md` files and the `SpookboxMixtape` folder), and upload it to Thunderstore. Done! :) Now your friends can download the content mod and be assured that you all share the same tunes.
-
-### Startup time
-
-Tracks are loaded synchronously by default so it may take a few seconds for the game to start up, and it may appear frozen in the meantime. If you have an SSD or only a few songs, add "-ihaveanssd" to the Steam Launch Options for a much faster startup experience.
-
-> [!WARNING]
-> Setting this flag with a large number of tracks or a slow drive may cause issues; remove the flag and restart the game if you experience desync problems with the music.
-
 
 ## In-game settings
 
@@ -101,6 +96,16 @@ Check this if you don't want the boombox to ever run out of battery. Only the ho
 ### [HOST] Price
 
 Sets the boombox's price. By default it is 100$. Only the host can set this, but they may freely change it anytime during the run (which will affect everyone).
+
+### Open music folder
+
+Opens the mod's own music folder in Windows Explorer.
+
+Please note that if you change music while the game is running, you must then click `Rescan music` to reload them.
+
+### Rescan music
+
+Rescans and reloads all tracks to the boombox.
 
 
 ## Credits
