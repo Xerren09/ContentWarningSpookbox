@@ -9,6 +9,11 @@ Content Warning Spöökbox
 
 Adds a silly boombox (The Spöökbox™) that lets players dance to any tune they want while going viral :]
 
+## Features
+* **Play your own music:** Load your local mp3 files to create your own mixtape to play!
+* **Dance with the monsters of the Old World:** In-game setting to allow monsters to also hear the music and let them know where you are... Some may not be happy.
+* **The party never stops:** Even if you stash the Spöökbox it will keep playing, so you are free to record or fight G L O R P and keep the beats flowing.
+
 
 ## How to install
 
