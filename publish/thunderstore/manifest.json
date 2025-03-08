@@ -5,6 +5,6 @@
     "description": "Adds a silly boombox (The Spöökbox™) to the store so you can dance to any tune you want while going viral :]",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100",
-        "Xerren-ShopAPI-1.1.0"
+        "Xerren-ShopAPI-1.2.0"
     ]
 }
