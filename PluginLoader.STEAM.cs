@@ -55,7 +55,7 @@ namespace Spookbox
                 {
                     Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed to load ({ex.GetType().Name}).");
                 }
-                Debug.LogError($"{SpookboxPlugin.MOD_GUID} IsRuntimeFault: {GameHandler.Instance.SettingsHandler != null}");
+                Debug.LogError($"{SpookboxPlugin.MOD_GUID} IsRuntimeInstallFault: {GameHandler.Instance.SettingsHandler != null}");
                 Debug.LogException(ex);
             }
         }

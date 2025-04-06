@@ -7,7 +7,6 @@ namespace Spookbox.Behaviour
 {
     public class SpookboxBehaviour : ItemInstanceBehaviour
     {
-        // Initialised in SpookboxPlugin
         private static readonly string INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID = "76f4d02a-65ae-4d8b-89da-1e3e1e82f82d";
         private static readonly float INPUT_DEBOUNCE_TIME = 0.15f;
         private static InputActionReference ZoomIn;
@@ -299,7 +298,7 @@ namespace Spookbox.Behaviour
             var speakerPrefab = SpookboxPlugin._bundle.LoadAsset<GameObject>("SpookboxSpeaker");
             var speaker = Instantiate(speakerPrefab);
             var stashedController = speaker.AddComponent<StashedSpookboxBehaviour>();
-            stashedController.Configure(_onOffEntry, _battery, _volume.Volume);
+            stashedController.Configure(player, _onOffEntry, _battery, _volume.Volume);
             speaker.name = $"__spookbox_speaker_{itemInstance.m_guid.Value}";
             speaker.transform.SetParent(target, false);
             var speakerAudio = speaker.GetComponent<AudioSource>();
