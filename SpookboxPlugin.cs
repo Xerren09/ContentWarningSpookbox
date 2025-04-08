@@ -57,7 +57,7 @@ namespace Spookbox
 
             _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
 
-            Mixtape.LoadTracks();
+            Mixtape.Load();
 
             // Detect local lobby creation so we can overwrite any potential leftover settings
             cb_onLobbyCreated = Callback<LobbyCreated_t>.Create(Steam_LobbyCreated);

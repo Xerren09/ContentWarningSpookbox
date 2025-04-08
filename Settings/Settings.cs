@@ -171,7 +171,7 @@ namespace Spookbox.Settings
     }
 
     /// <summary>
-    /// Forces a full music rescan via <see cref="Mixtape.LoadTracks"/>.
+    /// Forces a full music rescan via <see cref="Mixtape.Load"/>.
     /// </summary>
     //[ContentWarningSetting]
     public class BoomboxRescanMixtapeFolderSetting : ButtonSetting, IExposedSetting
@@ -182,7 +182,7 @@ namespace Spookbox.Settings
 
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
 
-        public override void OnClick() => Mixtape.LoadTracks();
+        public override void OnClick() => Mixtape.Load();
 
         public override void ApplyValue() { }
 

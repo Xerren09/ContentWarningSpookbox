@@ -12,6 +12,8 @@ namespace Spookbox.Behaviour
         private static InputActionReference ZoomIn;
         private static InputActionReference ZoomOut;
 
+        private static AudioClip EMPTY_CLIP = new AudioClip();
+
         static SpookboxBehaviour()
         {
             ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
@@ -54,6 +56,9 @@ namespace Spookbox.Behaviour
             _interactSFX = transform.Find("SFX/Interact").GetComponent<SFX_PlayOneShot>();
             // Tie the volume to the SFX bus
             _speaker.outputAudioMixerGroup = GameHandler.Instance.SettingsHandler.GetSetting<SFXVolumeSetting>().mixerGroup;
+            //
+            Mixtape.OnLoad += _onMixtapeLoad;
+            Mixtape.OnUnLoad += _onMixtapeUnLoad;
             //
             _localVolumeSetting = GameHandler.Instance.SettingsHandler.GetSetting<BoomboxLocalVolumeSetting>();
             _localVolumeSetting.Changed += _localVolumeSetting_Changed;
@@ -234,6 +239,8 @@ namespace Spookbox.Behaviour
             _localVolumeSetting.Changed -= _localVolumeSetting_Changed;
             itemInstance.onItemEquipped.RemoveListener(OnEquip);
             itemInstance.onUnequip.RemoveListener(OnUnequip);
+            Mixtape.OnLoad -= _onMixtapeLoad;
+            Mixtape.OnUnLoad -= _onMixtapeUnLoad;
         }
 
         private void OnEquip(Player player)
@@ -337,6 +344,25 @@ namespace Spookbox.Behaviour
             AdjustVolume();
         }
 
+        private void _onMixtapeLoad()
+        {
+            SetTrack(_track.TrackIndex, _playbackTime.currentTime);
+            if (_onOffEntry.on)
+            {
+                TryStartPlayback(true);
+            }
+        }
+
+        private void _onMixtapeUnLoad()
+        {
+            // Stop playing the local instance
+            var wasOn = _onOffEntry.on;
+            _onOffEntry.on = false;
+            TryStopPlayback();
+            _speaker.clip = EMPTY_CLIP;
+            _onOffEntry.on = wasOn;
+        }
+
         /// <summary>
         /// Sets the track to the clip at the specific index.
         /// </summary>
@@ -351,6 +377,7 @@ namespace Spookbox.Behaviour
             {
                 return;
             }
+            idx = Math.Clamp(idx, 0, Mixtape.Tracks.Count - 1);
             var clip = Mixtape.Tracks[idx];
             if (clip == _speaker.clip)
             {
@@ -390,7 +417,7 @@ namespace Spookbox.Behaviour
         }
 
         /// <summary>
-        /// Stops playback of the current track if possible. Calling it while playing does nothing.
+        /// Stops playback of the current track if possible. Calling it while not playing does nothing.
         /// </summary>
         /// <returns>Returns <see langword="true"/> if playback was stopped.</returns>
         private bool TryStopPlayback()
