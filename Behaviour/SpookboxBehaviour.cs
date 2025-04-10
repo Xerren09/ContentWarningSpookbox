@@ -150,11 +150,11 @@ namespace Spookbox.Behaviour
                     SetTrack(((_track.TrackIndex + 1) % Mixtape.Tracks.Count));
                     PlayClickButtonSFX();
                 }
-                if (Player.localPlayer.input.aimWasPressed)
+                /*if (Player.localPlayer.input.aimWasPressed)
                 {
                     SetTrack(((_track.TrackIndex + 1) % Mixtape.Tracks.Count));
                     PlayClickButtonSFX();
-                }
+                }*/
                 if (GlobalInputHandler.GetKeyUp(_volumeUpBindSetting.Keycode()))
                 {
                     _volume.Volume += 0.1f;
