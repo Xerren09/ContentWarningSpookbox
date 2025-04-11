@@ -10,7 +10,7 @@ namespace Spookbox.Settings
     /// <summary>
     /// Controls all boomboxes' local volume. This is on top of the separate volume set on the specific boombox instance.
     /// </summary>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxLocalVolumeSetting : FloatSetting, IExposedSetting
     {
         public event Action<float> Changed;
@@ -48,7 +48,7 @@ namespace Spookbox.Settings
     /// <remarks>
     /// This only controls the a boombox instance's own volume, not <see cref="BoomboxLocalVolumeSetting"/>.
     /// </remarks>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxVolumeUpBindSetting : KeyCodeSetting, IExposedSetting
     {
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
@@ -66,7 +66,7 @@ namespace Spookbox.Settings
     /// <remarks>
     /// This only controls the a boombox instance's own volume, not <see cref="BoomboxLocalVolumeSetting"/>.
     /// </remarks>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxVolumeDownBindSetting : KeyCodeSetting, IExposedSetting
     {
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
@@ -84,7 +84,7 @@ namespace Spookbox.Settings
     /// <remarks>
     /// If the current player is the host, this synchronises to every player in the lobby, without actually modifying their own settings.
     /// </remarks>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxAlertSetting : BoolSetting, IExposedSetting
     {
         public override void ApplyValue()
@@ -106,7 +106,7 @@ namespace Spookbox.Settings
     /// <remarks>
     /// If the current player is the host, this synchronises to every player in the lobby, without actually modifying their own settings.
     /// </remarks>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxInfiniteBatterySetting : BoolSetting, IExposedSetting
     {
         public override void ApplyValue()
@@ -125,7 +125,7 @@ namespace Spookbox.Settings
     /// <summary>
     /// Sets the purchase price of the boombox. This is a host only setting and will be set on lobby creation; changing this is not possible later.
     /// </summary>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxPriceSetting : IntSetting, IExposedSetting
     {
         public override void ApplyValue()
@@ -148,7 +148,7 @@ namespace Spookbox.Settings
     /// <summary>
     /// Opens the plugin's own music directory in the explorer. See <see cref="Mixtape.GetPluginMusicDirPath"/>.
     /// </summary>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxOpenTracksFolderSetting : ButtonSetting, IExposedSetting
     {
         public override string GetButtonText() => "Open";
@@ -171,9 +171,9 @@ namespace Spookbox.Settings
     }
 
     /// <summary>
-    /// Forces a full music rescan via <see cref="Mixtape.LoadTracks"/>.
+    /// Forces a full music rescan via <see cref="Mixtape.Load"/>.
     /// </summary>
-    [ContentWarningSetting]
+    //[ContentWarningSetting]
     public class BoomboxRescanMixtapeFolderSetting : ButtonSetting, IExposedSetting
     {
         public override string GetButtonText() => "Rescan";
@@ -182,7 +182,7 @@ namespace Spookbox.Settings
 
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
 
-        public override void OnClick() => Mixtape.LoadTracks();
+        public override void OnClick() => Mixtape.Load();
 
         public override void ApplyValue() { }
 

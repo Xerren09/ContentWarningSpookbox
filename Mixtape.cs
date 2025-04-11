@@ -23,6 +23,9 @@ namespace Spookbox
         public static readonly List<AudioClip> Tracks = new();
         public static int Length => Tracks.Count;
 
+        public static Action OnUnLoad;
+        public static Action OnLoad;
+
         /// <summary>
         /// Flag to ensure only one load operation can run at a time.
         /// </summary>
@@ -43,7 +46,7 @@ namespace Spookbox
         /// <remarks>
         /// Note that the number of tracks loaded will not exceed <see cref="MAX_TRACKS"/>.
         /// </remarks>
-        public static void LoadTracks()
+        public static void Load()
         {
             if (_isLoading)
             {
@@ -52,12 +55,7 @@ namespace Spookbox
             }
             _isLoading = true;
             Debug.Log($"Async load audio clips ({ASYNC_LOAD_ENV} flag) : {_asyncLoadTracks}");
-            // Cleanup old tracks
-            foreach(var clip in Tracks)
-            {
-                clip.UnloadAudioData();
-            }
-            Tracks.Clear();
+            Unload();
             var files = GetAllTracks();
             Debug.Log($"{files.Count} potential mixtape tracks found.");
             foreach (var file in files)
@@ -85,8 +83,18 @@ namespace Spookbox
             }
             Debug.Log($"Loaded {Tracks.Count} tracks to the Mixtape.");
             _isLoading = false;
+            OnLoad?.Invoke();
         }
 
+        public static void Unload()
+        {
+            OnUnLoad?.Invoke();
+            foreach (var clip in Tracks)
+            {
+                clip.UnloadAudioData();
+            }
+            Tracks.Clear();
+        }
         /*
 
         /// <summary>

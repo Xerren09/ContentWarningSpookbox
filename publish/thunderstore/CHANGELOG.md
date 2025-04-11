@@ -3,6 +3,20 @@
 All notable changes will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.0
+- Fixed some settings not being registered when installed late
+- Settings are now manually registered
+  - This is to avoid corrupting the game when a load fails
+- Fixed boombox still playing in stashed mode when the holding player dies
+- Fixed mixtape rescan action breaking the currently playing song
+  - Now attempts to continue where it left off if possible
+- Removed right click track selection completely
+  - Use mouse scroll / camera zoom action instead
+  - RMB now does something silly :)
+- Adjusted PluginLoader for the Steam release to behave more like BepInEx
+  - Should capture more faults, provide better warnings and not corrupt the game when something goes wrong
+  - Settings will now NOT appear in game when a load fails
+
 ## 1.1.0
 - DLLs are now correctly versioned
 - Scale monster alert radius with instance volume

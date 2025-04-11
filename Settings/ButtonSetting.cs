@@ -23,7 +23,7 @@ namespace Spookbox.Settings
                 UnityEngine.Object.Instantiate(setting.GetSettingUICell(), inputContainer).GetComponent<SettingInputUICell>().Setup(setting, settingHandler);
              */
             var ui = SingletonAsset<InputCellMapper>.Instance.KeyCodeSettingCell;
-            var edit = GameObject.Instantiate(ui) as GameObject;
+            var edit = GameObject.Instantiate(ui);
             var rm = edit.GetComponent<KeyCodeSettingUI>();
             // Destroy the original component immediately so when the settings builder looks for a SettingInputUICell
             // we are found first. Normal destroy would defer it to end of frame, which is too late

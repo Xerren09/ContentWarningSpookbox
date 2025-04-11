@@ -5,6 +5,8 @@ namespace Spookbox.Behaviour
 {
     public class StashedSpookboxBehaviour : MonoBehaviour
     {
+        public Player Owner => _owner;
+        private Player _owner;
         private OnOffEntry _onOffEntry;
         private BatteryEntry _batteryEntry;
         private float _volume;
@@ -24,8 +26,9 @@ namespace Spookbox.Behaviour
             _localVolumeSetting.Changed += _localVolumeSetting_Changed;
         }
 
-        public void Configure(OnOffEntry onOff, BatteryEntry battery, float volume)
+        public void Configure(Player owner, OnOffEntry onOff, BatteryEntry battery, float volume)
         {
+            _owner = owner;
             _onOffEntry = onOff;
             _batteryEntry = battery;
             _volume = volume;
@@ -63,6 +66,11 @@ namespace Spookbox.Behaviour
                     SFX_Player.instance.PlayNoise(base.transform.position, scaledAlertDist);
                     _alertCountdown = ALERT_INTERVAL;
                 }
+            }
+            if (_owner.data.dead == true)
+            {
+                // If the player dies, remove the speaker so the dropped item can continue playing
+                Destroy(gameObject);
             }
         }
     }
