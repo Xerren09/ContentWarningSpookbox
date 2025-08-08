@@ -27,6 +27,12 @@
 		<Reference Condition="'$(Configuration)'=='Modman'" Private="false" Include="$(AppData)\r2modmanPlus-local\ContentWarning\profiles\Default\BepInEx\core\BepInEx.dll" />
         <Reference Include="$(CWDir)\Content Warning_Data\Managed\*.dll" Private="false" Publicize="True" />
     </ItemGroup>
+
+    <ItemGroup>
+        <BuildMetadata Condition="'$(Configuration)'=='Modman'" Include="bepinex" />
+        <AdditionalThisAssemblyFields Condition="'$(Configuration)'=='Modman'" Include="IsBepinexBuild" Boolean="true" />
+        <AdditionalThisAssemblyFields Condition="'$(Configuration)'!='Modman'" Include="IsBepinexBuild" Boolean="false" />
+    </ItemGroup>
 	
     <ItemGroup>
         <!-- Use BepInEx's Assembly Publicizer to tell the compiler & IDE that every field, method, etc. is public, in the game assemblies. -->
@@ -43,6 +49,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <SharedFiles  Include="publish\common\*.*" />
         <SteamFiles Include="publish\steam\*.*" />
         <ThunderstoreFiles Include="publish\thunderstore\*.*" />
     </ItemGroup>
@@ -54,7 +61,7 @@
 
     <!-- Deploy only Steam-Debug files to vanilla local plugins dir -->
     <Target Condition="'$(Configuration)'=='Debug'" Name="CopyDebugVanillaPlugin" AfterTargets="Build">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb" DestinationFolder="$(CWPluginOutputPath)" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb;@(SharedFiles)" DestinationFolder="$(CWPluginOutputPath)" />
         <Message Text="Steam-Debug build copied to $(CWPluginOutputPath)" Importance="high" />
     </Target>
 
@@ -62,23 +69,23 @@
     <!-- Deploy full Steam-Release build and files to vanilla local plugins dir for Workshop publish -->
     <Target Condition="'$(Configuration)'=='Release'" Name="CopyReleaseVanillaPlugin" AfterTargets="Build">
         <!-- Create SteamCMD publish package -->
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(OutputPath)\Publish" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles);@(SharedFiles)" DestinationFolder="$(OutputPath)\Publish" />
         <!-- Clear Steam Workshop deploy folder -->
         <RemoveDir Directories="$(CWPluginOutputPath)" />
         <Message Text="Cleaned $(CWPluginOutputPath)" Importance="high" />
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles)" DestinationFolder="$(CWPluginOutputPath)" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(SteamFiles);@(SharedFiles)" DestinationFolder="$(CWPluginOutputPath)" />
         <Message Text="Steam-Release package copied to $(CWPluginOutputPath)" Importance="high" />
     </Target>
 
     <!-- Deploy only Modman-Debug files to default profile -->
     <Target Condition="'$(Configuration)'=='Modman'" Name="CopyBepInExPlugin" AfterTargets="Build">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb;@(ThunderstoreFiles)" DestinationFolder="$(ModmanPluginOutputPath)" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;$(OutputPath)\$(AssemblyName).pdb;@(ThunderstoreFiles);@(SharedFiles)" DestinationFolder="$(ModmanPluginOutputPath)" />
         <Message Text="Modman-Debug build copied to $(ModmanPluginOutputPath)" Importance="high" />
     </Target>
 
     <!-- Package full Modman-Release build and files for Thunderstore -->
     <Target Condition="'$(Configuration)'=='Modman'" Name="CreateThunderstorePackage" AfterTargets="CopyBepInExPlugin">
-        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles)" DestinationFolder="$(OutputPath)\Publish\Package" />
+        <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll;@(ThunderstoreFiles);@(SharedFiles)" DestinationFolder="$(OutputPath)\Publish\Package" />
         <ZipDirectory SourceDirectory="$(OutputPath)\Publish\Package" DestinationFile="$(OutputPath)\Publish\$(AssemblyName).ThunderstorePackage.$(AssemblyVersion).zip" Overwrite="True" />
         <Message Text="Modman-Release Thunderstore package packed: $(AssemblyName).ThunderstorePackage.$(AssemblyVersion).zip" Importance="high" />
     </Target>
