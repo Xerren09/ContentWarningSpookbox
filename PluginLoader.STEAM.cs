@@ -37,25 +37,31 @@ namespace Spookbox
             }
             catch (Exception ex)
             {
+                var isRuntimeInstallFault = GameHandler.Instance.SettingsHandler != null;
+                Debug.LogError($"{SpookboxPlugin.MOD_GUID} IsRuntimeInstallFault: {isRuntimeInstallFault}");
                 if (routine != null)
                 {
                     GameHandler.Instance.StopCoroutine(routine);
                 }
-                if (IsDependencyLoaded() == false)
+                if (isRuntimeInstallFault && IsDependencyLoaded() == false)
+                {
+                    Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed to load: {ShopApiPlugin.MOD_GUID} not loaded during late install.");
+                    ShowDependencyLateInstallRestartPrompt();
+                }
+                else if (IsDependencyLoaded() == false)
                 {
                     Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed to load: {ShopApiPlugin.MOD_GUID} not loaded.");
-                    ShowMissingDependencyRestartPrompt();
+                    ShowMissingDependencyErrorPrompt();
                 }
                 else if (IsDependencyVersionCorrect() == false)
                 {
                     Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed to load: {ShopApiPlugin.MOD_GUID} version incorrect.");
-                    ShowMissingDependencyRestartPrompt();
+                    ShowDependencyVersionErrorPrompt();
                 }
                 else
                 {
                     Debug.LogError($"{SpookboxPlugin.MOD_GUID} failed to load ({ex.GetType().Name}).");
                 }
-                Debug.LogError($"{SpookboxPlugin.MOD_GUID} IsRuntimeInstallFault: {GameHandler.Instance.SettingsHandler != null}");
                 Debug.LogException(ex);
             }
         }
@@ -88,13 +94,44 @@ namespace Spookbox
             return target != null;
         }
 
-        private static void ShowMissingDependencyRestartPrompt()
+        /// <summary>
+        /// Error message shown if the mod is installed from the Steam Workshop while the game is running
+        /// </summary>
+        private static void ShowDependencyLateInstallRestartPrompt()
         {
             var options = new ModalOption[2] { new ModalOption("Close Game", () => { Application.Quit(); }), new ModalOption("Ignore") };
-            Modal.Show($"{SpookboxPlugin.MOD_NAME} Dependency Error", "Spöökbox depends on the ShopAPI mod, which is missing. This can often be caused by installing the mod while the game is running. Please ensure you've subscribed to the ShopAPI mod, and restart your game. If you run into further issues please read the Workshop page, and don't hesitate to reach out.", options);
+            Modal.Show($"{SpookboxPlugin.MOD_NAME} Dependency Not Loaded", "Spöökbox depends on the ShopAPI mod, which is not loaded. This can often be caused by installing the mod while the game is running. Please ensure you've subscribed to the ShopAPI mod, and restart your game in order for the mod to work. If you run into further issues please read the Workshop page, and don't hesitate to reach out.", options);
         }
 
-        private static void ShowGenericRestartPrompt()
+        /// <summary>
+        /// Error message shown if the mod is missing the ShopAPI dependency during normal startup
+        /// </summary>
+        private static void ShowMissingDependencyErrorPrompt()
+        {
+            var options = new ModalOption[2] { new ModalOption("Close Game", () => { Application.Quit(); }), new ModalOption("Ignore") };
+            Modal.Show($"{SpookboxPlugin.MOD_NAME} Dependency Not Installed", "Spöökbox depends on the ShopAPI mod, which is not installed. The game will NOT work with Spöökbox enabled while ShopAPI is missing. Please ensure you've subscribed to the ShopAPI mod and restart your game, or disable Spöökbox.", options);
+        }
+
+        /// <summary>
+        /// Error message shown if the ShopAPI dependency is lower than expected
+        /// </summary>
+        private static void ShowDependencyVersionErrorPrompt()
+        {
+            var options = new ModalOption[2] { new ModalOption("Close Game", () => { Application.Quit(); }), new ModalOption("Ignore") };
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var target = Array.Find(assemblies, a => a.GetName().Name == "ShopAPI");
+            var presentVer = new Version();
+            if (target != null)
+            {
+                presentVer = target.GetVersion();
+            }
+            Modal.Show($"{SpookboxPlugin.MOD_NAME} Dependency Version Mismatch", $"Spöökbox depends on the ShopAPI mod, but can only find an old version installed, which may result in gamebreaking errors. ShopAPI version v{_minDepVersion} expected; found v{presentVer}. Please update ShopAPI to at least v{_minDepVersion}.", options);
+        }
+
+        /// <summary>
+        /// Error message shown when a generic exception occurs
+        /// </summary>
+        private static void ShowGenericErrorPrompt()
         {
             var options = new ModalOption[1] { new ModalOption("OK") };
             Modal.Show($"{SpookboxPlugin.MOD_NAME} Load Error", "Spöökbox encountered an error while loading. This can often be caused by installing the mod while the game is running. Please ensure you've subscribed to the ShopAPI mod, and restart your game. If you run into further issues please read the Workshop page, and don't hesitate to reach out.", options);
