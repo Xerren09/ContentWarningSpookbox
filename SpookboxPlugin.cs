@@ -51,14 +51,9 @@ namespace Spookbox
 
             _spookboxItem = _bundle.LoadAsset<Item>("Spookbox");
             _spookboxItem.itemObject.AddComponent<SpookboxBehaviour>();
-
             Shop.RegisterItem(_spookboxItem);
             Shop.RegisterCustomDataEntries();
-
-            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
-
             Mixtape.Load();
-
             // Detect local lobby creation so we can overwrite any potential leftover settings
             cb_onLobbyCreated = Callback<LobbyCreated_t>.Create(Steam_LobbyCreated);
 
@@ -86,6 +81,8 @@ namespace Spookbox
             RegisterGameSetting<BoomboxOpenTracksFolderSetting>();
             RegisterGameSetting<BoomboxRescanMixtapeFolderSetting>();
             Debug.Log($"{MOD_GUID} settings manually registered.");
+            //
+            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
         }
 
         private static void Steam_LobbyCreated(LobbyCreated_t e)
