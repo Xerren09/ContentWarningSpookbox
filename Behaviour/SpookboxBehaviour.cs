@@ -16,10 +16,12 @@ namespace Spookbox.Behaviour
 
         static SpookboxBehaviour()
         {
+            /*
             ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
             var cam = camItem.itemObject.GetComponent<VideoCamera>();
             ZoomIn = cam.m_cameraZoomIn;
             ZoomOut = cam.m_cameraZoomOut;
+            */
         }
 
         private bool _ready = false;
@@ -51,6 +53,13 @@ namespace Spookbox.Behaviour
 
         void Awake()
         {
+            if (ZoomIn == null)
+            {
+                ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
+                var cam = camItem.itemObject.GetComponent<VideoCamera>();
+                ZoomIn = cam.m_cameraZoomIn;
+                ZoomOut = cam.m_cameraZoomOut;
+            }
             _speakerObject = transform.Find("SFX/SpookboxSpeaker").gameObject;
             _speaker = _speakerObject.GetComponent<AudioSource>();
             _interactSFX = transform.Find("SFX/Interact").GetComponent<SFX_PlayOneShot>();
