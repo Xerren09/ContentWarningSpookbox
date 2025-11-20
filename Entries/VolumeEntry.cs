@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using ContentWarningShop.Localisation;
 
 namespace Spookbox.Entries
 {
     public class VolumeEntry : ItemDataEntry, IHaveUIData
     {
+        public const string VOLUME_LOC_KEY_NAME = "spookbox_volume";
+        private string _labelText = "Volume";
         private float _volume = 0f;
         public float Volume 
         { 
@@ -14,7 +17,7 @@ namespace Spookbox.Entries
             }
         }
         public const float MaxVolume = 1f;
-        public const string UIString = "{0}% Volume";
+        public string UIString = "{0}% {1}";
 
         public override void Deserialize(Zorro.Core.Serizalization.BinaryDeserializer binaryDeserializer)
         {
@@ -29,8 +32,15 @@ namespace Spookbox.Entries
 
         public string GetString()
         {
-            // TODO: Get locale string
-            return string.Format(UIString, Mathf.RoundToInt(Volume * 100));
+            return string.Format(UIString, Mathf.RoundToInt(Volume * 100), _labelText);
+        }
+
+        public void UpdateLocale()
+        {
+            if (ShopLocalisation.TryGetLocaleString("spookbox_volume", out string label))
+            {
+                _labelText = label;
+            }
         }
     }
 }

@@ -55,5 +55,10 @@ namespace Spookbox.Entries
             }
             return UIString;
         }
+
+        public void UpdateLocale()
+        {
+            // No label
+        }
     }
 }
