@@ -256,7 +256,7 @@ namespace Spookbox.Behaviour
         {
             if (TryReattachSpeaker(player))
             {
-                Debug.Log($"Spöökbox speaker reattached: {itemInstance.instanceData.m_guid}");
+                Logger.Log($"Speaker reattached: {itemInstance.instanceData.m_guid}");
             }
             SetTrack(_track.TrackIndex, _playbackTime.currentTime);
             TryStartPlayback();
@@ -268,7 +268,7 @@ namespace Spookbox.Behaviour
             if (stillOwnedByPlayer && _onOffEntry.on == true)
             {
                 DetachSpeaker(player);
-                Debug.Log($"Spöökbox speaker detached: {itemInstance.instanceData.m_guid}");
+                Logger.Log($"Speaker detached: {itemInstance.instanceData.m_guid}");
             }
         }
 

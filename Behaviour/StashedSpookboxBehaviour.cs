@@ -52,7 +52,7 @@ namespace Spookbox.Behaviour
                 {
                     _onOffEntry.on = false;
                     _onOffEntry.SetDirty();
-                    Debug.Log($"Stashed {gameObject.name} destroyed; ran out of battery.");
+                    Logger.Log($"Stashed {gameObject.name} destroyed; ran out of battery.");
                     Destroy(gameObject);
                 }
                 _batteryEntry.m_charge -= Time.deltaTime;
