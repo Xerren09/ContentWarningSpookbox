@@ -21,10 +21,6 @@ namespace Spookbox
             2. Mod dependency order is not enforced: items are loaded in the other they have been subscribed to. This means ShopAPI
                loads second, and Spookbox faults because things like SynchronisedMetadata are missing.
          */
-        /// <summary>
-        /// ShopAPI workshop handle ID
-        /// </summary>
-        const ulong w_id = 3408837293;
 
         private static System.Version _minDepVersion = new System.Version(ShopApiPlugin.MOD_VER);
         static PluginLoader() 
@@ -112,7 +108,7 @@ namespace Spookbox
         private static bool IsDependencyDownloaded()
         {
 #if RELEASE
-            EItemState dependencyState = (EItemState)SteamUGC.GetItemState(new PublishedFileId_t(w_id));
+            EItemState dependencyState = (EItemState)SteamUGC.GetItemState(new PublishedFileId_t(ShopApiPlugin.STEAM_WORKSHOP_ITEM_ID));
             return dependencyState.HasFlag(EItemState.k_EItemStateInstalled) || dependencyState.HasFlag(EItemState.k_EItemStateSubscribed);
 #elif DEBUG
             return true;
@@ -122,7 +118,7 @@ namespace Spookbox
         private static bool IsDependencyEnabled()
         {
 #if RELEASE
-            EItemState dependencyState = (EItemState)SteamUGC.GetItemState(new PublishedFileId_t(w_id));
+            EItemState dependencyState = (EItemState)SteamUGC.GetItemState(new PublishedFileId_t(ShopApiPlugin.STEAM_WORKSHOP_ITEM_ID));
             return !dependencyState.HasFlag(EItemState.k_EItemStateDisabledLocally);
 #elif DEBUG
             return true;

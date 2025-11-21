@@ -45,11 +45,11 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Xerren.ContentWarning.ShopAPI" Version="1.2.14" PrivateAssets="all" />
+      <PackageReference Include="Xerren.ContentWarning.ShopAPI" Version="1.3.3" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <SharedFiles  Include="publish\common\*.*" />
+        <SharedFiles Include="publish\common\*.*" />
         <SteamFiles Include="publish\steam\*.*" />
         <ThunderstoreFiles Include="publish\thunderstore\*.*" />
     </ItemGroup>

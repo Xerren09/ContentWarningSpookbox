@@ -51,6 +51,7 @@ namespace Spookbox
 
             _spookboxItem = _bundle.LoadAsset<Item>("Spookbox");
             _spookboxItem.itemObject.AddComponent<SpookboxBehaviour>();
+            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
             Shop.RegisterItem(_spookboxItem);
             Shop.RegisterCustomDataEntries();
             Mixtape.Load();
@@ -92,8 +93,6 @@ namespace Spookbox
             ApplyGameSetting<BoomboxAlertSetting>();
             ApplyGameSetting<BoomboxInfiniteBatterySetting>();
             ApplyGameSetting<BoomboxPriceSetting>();
-            //
-            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
         }
 
         /// <summary>
