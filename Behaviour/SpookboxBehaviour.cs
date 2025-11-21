@@ -14,16 +14,6 @@ namespace Spookbox.Behaviour
 
         private static AudioClip EMPTY_CLIP = new AudioClip();
 
-        static SpookboxBehaviour()
-        {
-            /*
-            ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
-            var cam = camItem.itemObject.GetComponent<VideoCamera>();
-            ZoomIn = cam.m_cameraZoomIn;
-            ZoomOut = cam.m_cameraZoomOut;
-            */
-        }
-
         private bool _ready = false;
 
         private GameObject _speakerObject;
