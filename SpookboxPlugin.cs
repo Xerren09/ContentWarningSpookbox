@@ -81,8 +81,6 @@ namespace Spookbox
             RegisterGameSetting<BoomboxRescanMixtapeFolderSetting>();
             //
             Logger.Log($"Settings registered.");
-            //
-            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
         }
 
         private static void Steam_LobbyCreated(LobbyCreated_t e)
@@ -94,6 +92,8 @@ namespace Spookbox
             ApplyGameSetting<BoomboxAlertSetting>();
             ApplyGameSetting<BoomboxInfiniteBatterySetting>();
             ApplyGameSetting<BoomboxPriceSetting>();
+            //
+            _spookboxItem.SetDefaultTooltips($"{ShopLocalisation.UseGlyph} Play;{ShopLocalisation.ZoomGlyph} Select Track");
         }
 
         /// <summary>
