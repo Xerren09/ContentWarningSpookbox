@@ -3,6 +3,14 @@
 All notable changes will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.3
+- Updated to Unity 6 (6000.0.59) to match game version 1.20
+- Added additional install error messages
+- Clarified error messages
+- Updated model texture to match the game's vibe a bit more :3
+- Added equip SFX
+- Added physics SFX
+
 ## 1.2.0
 - Fixed some settings not being registered when installed late
 - Settings are now manually registered
