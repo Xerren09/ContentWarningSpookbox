@@ -14,11 +14,11 @@ namespace Spookbox
          */
         void Awake()
         {
-            Debug.Log($"{SpookboxPlugin.MOD_GUID} loading via BepInEx mod loader.");
+            Spookbox.Logger.Log($"Loading via BepInEx mod loader.");
             // Mod settings will initialise on GameHandler.Initialize postfix patch
             SpookboxPlugin.InitialisePlugin();
             harmony.PatchAll();
-            Debug.Log($"{SpookboxPlugin.MOD_GUID} loaded.");
+            Spookbox.Logger.Log($"Finished loading.");
         }
     }
 

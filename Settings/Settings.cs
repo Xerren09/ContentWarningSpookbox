@@ -133,7 +133,7 @@ namespace Spookbox.Settings
             if (SpookboxPlugin._spookboxItem == null) return;
             if (Shop.UpdateItemPrice(SpookboxPlugin._spookboxItem, Value) == false)
             {
-                UnityEngine.Debug.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
+                Spookbox.Logger.LogWarning($"Attempted to apply {nameof(BoomboxPriceSetting)} value to item while not the host of the current lobby.");
             }
         }
         public SettingCategory GetSettingCategory() => SettingCategory.Mods;
@@ -157,7 +157,7 @@ namespace Spookbox.Settings
 
         public override void OnClick()
         {
-            UnityEngine.Debug.Log($"Opening music dir: {Mixtape.GetPluginMusicDirPath()}");
+            Spookbox.Logger.Log($"Opening music dir: {Mixtape.GetPluginMusicDirPath()}");
             Process.Start("explorer.exe", Mixtape.GetPluginMusicDirPath());
         }
 

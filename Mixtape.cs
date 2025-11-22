@@ -48,46 +48,48 @@ namespace Spookbox
         /// </remarks>
         public static void Load()
         {
+            Logger.Log($"Loading mixtape!");
             if (_isLoading)
             {
-                Debug.LogWarning("Spookbox mixtape is already loading tracks.");
+                Logger.LogWarning("Spookbox mixtape is already loading tracks.");
                 return;
             }
             _isLoading = true;
-            Debug.Log($"Async load audio clips ({ASYNC_LOAD_ENV} flag) : {_asyncLoadTracks}");
+            Logger.Log($"Async load audio clips ({ASYNC_LOAD_ENV} flag) : {_asyncLoadTracks}");
             Unload();
             var files = GetAllTracks();
-            Debug.Log($"{files.Count} potential mixtape tracks found.");
+            Logger.Log($"{files.Count} potential mixtape tracks found.");
             foreach (var file in files)
             {
                 if (Tracks.Count == MAX_TRACKS)
                 {
-                    Debug.LogWarning($"Mixtape full: maximum track count limit reached ({MAX_TRACKS}).");
+                    Logger.LogWarning($"Mixtape full: maximum track count limit reached ({MAX_TRACKS}).");
                     break;
                 }
                 var type = GetAudioType(file);
                 if (type == AudioType.UNKNOWN)
                 {
-                    Debug.LogWarning($"Track \"{file}\" could not be loaded due to unsupported audio type.");
+                    Logger.LogWarning($"Track \"{file}\" could not be loaded due to unsupported audio type.");
                     continue;
                 }
                 var track = LoadAudioClipFromFile(file, GetAudioType(file));
                 if (track == null)
                 {
-                    Debug.LogWarning($"Track \"{file}\" skipped due to an error.");
+                    Logger.LogWarning($"Track \"{file}\" skipped due to an error.");
                     continue;
                 }
                 track.name = Path.GetFileNameWithoutExtension(file);
                 Tracks.Add(track);
-                Debug.Log($"Added track to mixtape: {track.name}");
+                Logger.Log($"Added track to mixtape: {track.name}");
             }
-            Debug.Log($"Loaded {Tracks.Count} tracks to the Mixtape.");
+            Logger.Log($"Loaded {Tracks.Count} tracks to the Mixtape.");
             _isLoading = false;
             OnLoad?.Invoke();
         }
 
         public static void Unload()
         {
+            Logger.Log($"Unloading mixtape!");
             OnUnLoad?.Invoke();
             foreach (var clip in Tracks)
             {
@@ -280,19 +282,19 @@ namespace Spookbox
                     }
                     else
                     {
-                        Debug.LogError($"Loading AudioClip from {path} failed: {req.error}");
+                        Logger.LogError($"Loading AudioClip from {path} failed: {req.error}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Loading AudioClip failed:");
+                    Logger.LogError($"Loading AudioClip failed:");
                     Debug.LogException(ex);
                 }
             }
             catch (Exception ex)
             {
 
-                Debug.LogError($"Request for {path} failed:");
+                Logger.LogError($"Request for {path} failed:");
                 Debug.LogException(ex);
             }
             finally

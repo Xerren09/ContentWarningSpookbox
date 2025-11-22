@@ -14,14 +14,6 @@ namespace Spookbox.Behaviour
 
         private static AudioClip EMPTY_CLIP = new AudioClip();
 
-        static SpookboxBehaviour()
-        {
-            ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
-            var cam = camItem.itemObject.GetComponent<VideoCamera>();
-            ZoomIn = cam.m_cameraZoomIn;
-            ZoomOut = cam.m_cameraZoomOut;
-        }
-
         private bool _ready = false;
 
         private GameObject _speakerObject;
@@ -51,6 +43,13 @@ namespace Spookbox.Behaviour
 
         void Awake()
         {
+            if (ZoomIn == null)
+            {
+                ItemDatabase.TryGetItemFromPersistentID(new Guid(INPUTACTIONREF_SOURCE_ITEM_PERSISTENT_GUID), out Item camItem);
+                var cam = camItem.itemObject.GetComponent<VideoCamera>();
+                ZoomIn = cam.m_cameraZoomIn;
+                ZoomOut = cam.m_cameraZoomOut;
+            }
             _speakerObject = transform.Find("SFX/SpookboxSpeaker").gameObject;
             _speaker = _speakerObject.GetComponent<AudioSource>();
             _interactSFX = transform.Find("SFX/Interact").GetComponent<SFX_PlayOneShot>();
@@ -247,7 +246,7 @@ namespace Spookbox.Behaviour
         {
             if (TryReattachSpeaker(player))
             {
-                Debug.Log($"Spöökbox speaker reattached: {itemInstance.instanceData.m_guid}");
+                Logger.Log($"Speaker reattached: {itemInstance.instanceData.m_guid}");
             }
             SetTrack(_track.TrackIndex, _playbackTime.currentTime);
             TryStartPlayback();
@@ -259,7 +258,7 @@ namespace Spookbox.Behaviour
             if (stillOwnedByPlayer && _onOffEntry.on == true)
             {
                 DetachSpeaker(player);
-                Debug.Log($"Spöökbox speaker detached: {itemInstance.instanceData.m_guid}");
+                Logger.Log($"Speaker detached: {itemInstance.instanceData.m_guid}");
             }
         }
 
